@@ -32,7 +32,18 @@ sbr page <pageName>
 ```
 
 #### build
-> developing
+> build project
+```
+    sbr build
+```
+
+#### version
+> show saber-cli version
+```
+    sbr --version
+    sbr -V
+```
+
 
 ### History
 #### 2017.7.14
@@ -40,3 +51,4 @@ create command
 init command
 page command
 run command
+build command

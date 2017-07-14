@@ -118,9 +118,13 @@ program.command('build')
 //show help message when run sbr -h
 program.on('--help', function () {
     console.log('');
+    console.log('  Version:');
+    console.log(chalk.green(`    ${config.version}`));
+    console.log('');
     console.log('  Helps:');
     console.log(chalk.green('    for more details run'), chalk.grey('sbr [command] --help'));
     console.log(chalk.green('    eg:'), chalk.grey('sbr init --help'));
     console.log('')
 });
+
 program.parse(process.argv);
