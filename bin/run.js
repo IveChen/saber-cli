@@ -10,8 +10,8 @@ let util = require('./util');
 module.exports = function (projectPath, cliPath, pageName) {
     util.checkIsSbrProject(projectPath).then(function () {
         let projectName = path.basename(projectPath);
-        readDevConfig(projectPath).then(function (data) {
-            server.start(data, {
+        readDevConfig(projectPath).then(function (devConfig) {
+            server.start(devConfig, {
                 projectName,
                 projectPath,
                 cliPath,

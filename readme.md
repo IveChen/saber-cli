@@ -20,16 +20,23 @@ sbr create <projectName>
 #### run [pageName]
 > run project with [pageName] page
 ```
-    sbr run [pageName]
-    //sbr run user/list
+sbr run [pageName]
+//sbr run user/list
 ```
 
 #### page <pageName>
 > add <pageName> page
 ```
-    sbr page <pageName>
-    //sbr page user/list
+sbr page <pageName>
+//sbr page user/list
 ```
 
-### build
+#### build
 > developing
+
+### History
+#### 2017.7.14
+create command
+init command
+page command
+run command

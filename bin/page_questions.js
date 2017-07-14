@@ -1,7 +1,7 @@
 let inquirer = require('inquirer');
 module.exports = function (defaultOptions) {
     return inquirer.prompt([{
-        name: 'title',
+        name: 'pageTitle',
         message: `page title`,
         default: defaultOptions.pageTitle
     }]);

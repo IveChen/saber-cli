@@ -9,7 +9,8 @@ let chalk = require('chalk');
 let config = require('./package.json');
 let cmdInit = require('./bin/init');
 let cmdPage = require('./bin/page');
-let cmdRun = require('./bin/run')
+let cmdRun = require('./bin/run');
+let cmdBuild = require('./bin/build');
 
 program.allowUnknownOption();
 program.version(config.version);
@@ -103,10 +104,21 @@ program.command('run [pageName]')
         console.log(chalk.grey('sbr run'))
     });
 
+program.command('build')
+    .description('build project')
+    .action(function () {
+        cmdBuild(process.cwd(), __dirname)
+    })
+    .on('--help', function () {
+        console.log('');
+        console.log('Example :');
+        console.log(chalk.grey('sbr build'));
+    });
+
 //show help message when run sbr -h
 program.on('--help', function () {
     console.log('');
-    console.log('  Helps:')
+    console.log('  Helps:');
     console.log(chalk.green('    for more details run'), chalk.grey('sbr [command] --help'));
     console.log(chalk.green('    eg:'), chalk.grey('sbr init --help'));
     console.log('')

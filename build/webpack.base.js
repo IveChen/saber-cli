@@ -81,15 +81,6 @@ module.exports = function (options) {
         plugins: [
             new webpack.optimize.ModuleConcatenationPlugin(),
             new ExtractTextPlugin('styles/[name].[hash:8].css'),
-            // new CssEntryWebpackPlugin({
-            //     output: {
-            //         filename: path.join('styles', '[name].[contenthash:8].css')
-            //     },
-            //     test: function (file) {
-            //         return file.indexOf('.css') > -1 || file.indexOf('.less') > -1;
-            //     }
-            // }),
-            //not support webpack3
             ...plugins
         ]
     };

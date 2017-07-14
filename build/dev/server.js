@@ -21,10 +21,10 @@ function start(devConfig, options) {
 
     let hotMiddleware = require('webpack-hot-middleware')(compiler, {
         log (message){
-            if(message.indexOf('built') > -1){
+            if (message.indexOf('built') > -1) {
                 //build success
                 spinner.succeed(`${chalk.red(moment().format('hh:mm:ss:SSS'))}: ${message}`);
-            }else{
+            } else {
                 spinner.start(message);
             }
         }
@@ -57,8 +57,9 @@ function start(devConfig, options) {
     devMiddleware.waitUntilValid(() => {
         spinner.succeed('webpack bundle first time.');
         spinner.start('opening browser');
-        if (devConfig.home) {
-            let uri = `http://localhost:${devConfig.port}/${devConfig.home}.html`
+        let homePage = options.pageName ? options.pageName : devConfig.home;
+        if (homePage) {
+            let uri = `http://localhost:${devConfig.port}/${homePage}.html`
             require('opn')(uri);
             spinner.succeed('auto open browser with page ' + chalk.grey(uri));
         } else {
@@ -78,6 +79,7 @@ function stop() {
 
 function generateDevConfig(options) {
     let webpackConfig = merge(getBaseConfig(options), {
+        devtool: '#cheap-module-eval-source-map',
         output: {
             publicPath: '/'
         },
