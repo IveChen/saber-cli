@@ -1,0 +1,9 @@
+{
+  "name": "{{appName}}",
+  "version": "{{version}}",
+  "description": "{{description}}",
+  "author": "{{author}}",
+  "saber": {
+    "create": "{{create_time}}"
+  }
+}
