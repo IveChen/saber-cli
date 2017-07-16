@@ -13,8 +13,8 @@ module.exports = function (options) {
             filename: 'script/[name].[hash:8].js',
         },
         resolve: {
-            alias:{
-              'vue':'vue/dist/vue.js'
+            alias: {
+                'vue': 'vue/dist/vue.js'
             },
             modules: [
                 path.join(options.projectPath, 'node_modules'),
@@ -44,6 +44,7 @@ module.exports = function (options) {
                 {
                     test: /\.js$/,
                     include: [path.join(options.projectPath, 'src')],
+                    exclude: [path.join(options.projectPath, 'node_modules'), path.join(options.cliPath, 'node_modules')],
                     use: [{
                         loader: 'babel-loader',
                         options: {
@@ -60,19 +61,47 @@ module.exports = function (options) {
                 {
                     test: /\.less/,
                     include: [path.join(options.projectPath, 'src')],
-                    use: ExtractTextPlugin.extract(['css-loader', 'less-loader'])
+                    exclude: [path.join(options.projectPath, 'node_modules'), path.join(options.cliPath, 'node_modules')],
+                    //fuck extract text plugin loaders/loader bug.
+                    loaders: ExtractTextPlugin.extract({
+                        fallback: "style-loader",
+                        use: [{
+                            loader: "css-loader"
+                        }, {
+                            loader: 'less-loader'
+                        }]
+                    })
                 },
                 {
                     test: /\.css/,
                     include: [path.join(options.projectPath, 'src')],
-                    use: ExtractTextPlugin.extract(['css-loader'])
+                    exclude: [path.join(options.projectPath, 'node_modules'), path.join(options.cliPath, 'node_modules')],
+                    //fuck extract text plugin loaders/loader bug.
+                    loader: ExtractTextPlugin.extract('css-loader')
                 },
                 {
                     test: /\.vue/,
                     use: [{
                         loader: 'vue-loader',
+                        options: {}
+                    }]
+                },
+                {
+                    test: /(png|jpe?g|gif)$/,
+                    loader: [{
+                        loader: 'url-loader',
                         options: {
-
+                            limit: 1024 * 8,
+                            name: 'images/[name].[hash:8].[ext]'
+                        }
+                    }]
+                },
+                {
+                    test: /\.(woff2?|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                    loader: [{
+                        loader: 'file-loader',
+                        options: {
+                            name: 'fonts/[name].[hash:8].[ext]'
                         }
                     }]
                 }

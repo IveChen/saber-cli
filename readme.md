@@ -14,6 +14,7 @@ sbr init
 > create project in current fold
 ```
 sbr create <projectName>
+//eg: sbr create hello-world
 ```
 
 
@@ -21,34 +22,42 @@ sbr create <projectName>
 > run project with [pageName] page
 ```
 sbr run [pageName]
-//sbr run user/list
+//eg: sbr run user/list
 ```
 
 #### page <pageName>
 > add <pageName> page
 ```
 sbr page <pageName>
-//sbr page user/list
+//eg: sbr page user/list
 ```
 
 #### build
 > build project
 ```
-    sbr build
+sbr build
 ```
 
 #### version
 > show saber-cli version
 ```
-    sbr --version
-    sbr -V
+sbr --version
+sbr -V
 ```
 
 
+
+
 ### History
+
+#### 2017.7.16
+> - favorite.ico support
+> - image loader support
+> - fonts loader support
+
 #### 2017.7.14
-create command
-init command
-page command
-run command
-build command
+> - create command
+> - init command
+> - page command
+> - run command
+> - build command

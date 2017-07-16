@@ -29,7 +29,8 @@ function buildEntriesAndHtmlWebpackPlugins(projectPath) {
             template: file,
             inject: true,
             chunks: chunks,
-            filename: `${entryName}.html`
+            filename: `${entryName}.html`,
+            favicon: path.join(projectPath, 'src', 'assets', 'images', 'favorite.ico')
         }))
     });
     return {

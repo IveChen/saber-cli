@@ -1,3 +1,5 @@
 module.exports = {
-    publicPath: './'
+    publicPath: './',
+    pageDist: '/dist',
+    assetsPath: '/dist'
 };

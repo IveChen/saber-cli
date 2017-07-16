@@ -1,5 +1,8 @@
 import './index.less';
 
+import '../../assets/third-party/bootstrap/css/bootstrap.css'
+
+
 import Vue from 'vue';
 import HelloWorld from './index.vue';
 
