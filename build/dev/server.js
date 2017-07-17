@@ -13,7 +13,7 @@ function start(devConfig, options) {
     let spinner = ora();
     spinner.start('starting server');
     let app = express();
-    let compiler = webpack(generateDevConfig(options));
+    let compiler = webpack(generateDevConfig(devConfig, options));
     let devMiddleware = require('webpack-dev-middleware')(compiler, {
         publicPath: '/',
         noInfo: true
@@ -77,8 +77,8 @@ function stop() {
 
 }
 
-function generateDevConfig(options) {
-    let webpackConfig = merge(getBaseConfig(options), {
+function generateDevConfig(devConfig, options) {
+    let webpackConfig = merge(getBaseConfig(devConfig, options), {
         devtool: '#cheap-module-eval-source-map',
         output: {
             publicPath: '/'

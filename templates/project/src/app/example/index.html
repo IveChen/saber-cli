@@ -5,29 +5,36 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>example</title>
+    <title>Example</title>
+    <link rel="stylesheet" href="../../assets/third-party/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./index.less">
 </head>
 <body>
 <div class="container">
+
     <div class="jumbotron">
-        <h1>Hello, world!</h1>
+        <h1><img src="./saber.jpeg" class="saber"/>：Hello,World !</h1>
         <p>welcome to example page</p>
         <p>
-            1. example page is default to open,you can change by modify &lt;project&gt;/config/dev.config.js or run
-            command
+            1. example page is default to open,you can modify 'home' attribute in &lt;project&gt;/config/dev.config.js or run command
         </p>
-        <pre>sbr run [pageName] //eg: sbr run user/list</pre>
+        <pre>sbr run [pageName] //eg: sbr run example/normal</pre>
         <p>
-            2. there are some commands helpful,you can run 'sbr -h' to see more details.
+            2. there are some commands helpful,you can run '<strong><i>sbr -h</i></strong>' to see more details.
+        </p>
+        <p>
+            3.some example below. you can click to know more.
         </p>
     </div>
-    <div id="app">
-        <hello-world></hello-world>
-    </div>
-    <div>
-        my name is saber.
-        <div class="saber"></div>
-    </div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="/example/normal.html">
+                <h4>normal example</h4>
+                <div>index.js auto import by webpack</div>
+                <div>index.less import by index.js default</div>
+            </a>
+        </li>
+    </ul>
 </div>
 </body>
 </html>

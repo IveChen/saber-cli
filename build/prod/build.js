@@ -34,7 +34,7 @@ module.exports = function (prodConfig, options) {
 };
 
 function generateProdConfig(prodConfig, options) {
-    return merge(getBaseConfig(options), {
+    return merge(getBaseConfig(prodConfig, options), {
         output: {
             publicPath: prodConfig.publicPath || '/'
         },

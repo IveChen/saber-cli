@@ -1,6 +1,6 @@
 {
   "name": "saber-cli",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "an cli for annoying webpack config",
   "main": "index.js",
   "scripts": {
@@ -47,6 +47,7 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
     "glob": "^7.1.2",
+    "html-loader": "^0.4.5",
     "html-webpack-plugin": "^2.29.0",
     "inquirer": "^3.1.1",
     "less": "^2.7.2",
@@ -65,9 +66,10 @@
     "webpack": "^3.2.0",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-hot-middleware": "^2.18.2",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "extract-loader": "^0.1.0",
+    "optimize-css-assets-webpack-plugin": "^2.0.0"
   },
   "devDependencies": {
-    "optimize-css-assets-webpack-plugin": "^2.0.0"
   }
 }

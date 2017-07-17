@@ -64,13 +64,7 @@ function installNpmPackage(packName, flag = '') {
 
 //install some npm dependencies
 function installDependencies(projectPath, projectName) {
-    const packages = [{
-        name: 'vue',
-        flag: '--save'
-    }, {
-        name: 'vue-template-compiler',
-        flag: '--save-dev'
-    }];
+    const packages = [];
     if (packages.length) {
         spinner.start(chalk.grey('install npm packages'));
         spinner.stopAndPersist();

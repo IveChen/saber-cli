@@ -5,7 +5,7 @@ let webpack = require('webpack');
 
 let util = require('./util');
 
-module.exports = function (options) {
+module.exports = function (userConfig, options) {
     let {entries, plugins} = util.buildEntriesAndHtmlWebpackPlugins(options.projectPath);
     return {
         output: {
@@ -58,27 +58,8 @@ module.exports = function (options) {
                         }
                     }]
                 },
-                {
-                    test: /\.less/,
-                    include: [path.join(options.projectPath, 'src')],
-                    exclude: [path.join(options.projectPath, 'node_modules'), path.join(options.cliPath, 'node_modules')],
-                    //fuck extract text plugin loaders/loader bug.
-                    loaders: ExtractTextPlugin.extract({
-                        fallback: "style-loader",
-                        use: [{
-                            loader: "css-loader"
-                        }, {
-                            loader: 'less-loader'
-                        }]
-                    })
-                },
-                {
-                    test: /\.css/,
-                    include: [path.join(options.projectPath, 'src')],
-                    exclude: [path.join(options.projectPath, 'node_modules'), path.join(options.cliPath, 'node_modules')],
-                    //fuck extract text plugin loaders/loader bug.
-                    loader: ExtractTextPlugin.extract('css-loader')
-                },
+                ...util.getStyleLoaders('css', options),
+                ...util.getStyleLoaders('less', options),
                 {
                     test: /\.vue/,
                     use: [{
@@ -104,7 +85,17 @@ module.exports = function (options) {
                             name: 'fonts/[name].[hash:8].[ext]'
                         }
                     }]
+                },
+                {
+                    test: /\.html$/,
+                    loader: [{
+                        loader: 'html-loader',
+                        options: {
+                            attrs: userConfig.htmlAssets || ['script:src', 'img:src', 'link:href']
+                        }
+                    }]
                 }
+
             ]
         },
         plugins: [

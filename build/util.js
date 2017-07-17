@@ -2,6 +2,7 @@ let path = require('path');
 let glob = require('glob');
 let fs = require('fs');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
+let ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 function getPath(projectPath, ...otherPath) {
     return path.join(projectPath, ...otherPath);
@@ -39,7 +40,54 @@ function buildEntriesAndHtmlWebpackPlugins(projectPath) {
     }
 }
 
+function getStyleLoaders(ext, options) {
+    let loaderConfig = {
+        test: new RegExp(`.${ext}$`),
+        include: [
+            path.join(options.projectPath, 'src')
+        ]
+    };
+
+
+    let loaders = [];
+    //fuck extract text plugin loaders/loader bug.
+    if (ext === 'css') {
+        loaders.push(Object.assign({}, loaderConfig, {
+            issuer: /\.js$/,
+            loader: ExtractTextPlugin.extract('css-loader')
+        }));
+    } else {
+        loaders.push(Object.assign({}, loaderConfig, {
+            issuer: /\.js$/,
+            loaders: ExtractTextPlugin.extract(['css-loader', `${ext}-loader`])
+        }))
+    }
+
+    let htmlAsssetsLoaderList = [{
+        loader: 'file-loader',
+        options: {
+            name: `styles/[name]_${ext}.[hash:8].css`
+        }
+    }, {
+        loader: 'extract-loader'
+    }];
+    if (ext !== 'css') {
+        htmlAsssetsLoaderList.push({
+            loader: 'css-loader'
+        })
+    }
+    htmlAsssetsLoaderList.push({
+        loader: `${ext}-loader`
+    });
+    loaders.push(Object.assign({}, loaderConfig, {
+        issuer: /\.html$/,
+        loaders: htmlAsssetsLoaderList
+    }));
+    return loaders;
+}
+
 module.exports = {
     getPath,
-    buildEntriesAndHtmlWebpackPlugins
+    buildEntriesAndHtmlWebpackPlugins,
+    getStyleLoaders
 };
