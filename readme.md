@@ -65,13 +65,29 @@ sbr -V
 - tpl support
 > for some traditional projects.
 
+- rem support
+> for some ie9+ projects.
+
+- project frameworks
+> may need choose project main frameworks:react/vue/jquery
+
+- custom module.rules
+> enable user defined rules
+
+- base project config
+
 - upgrade project when cli is update before it's not stable.
 
 ### History
 #### 2017.7.18
-- <script src='./index.js' /> support
-- <script src='./index.js?source' /> support
-- <link src='./index.less' /> support
+- support tag import rules.
+```
+    <script src='./index.js' />
+    <script src='./index.js?source' />
+    <link src='./index.css' />
+    <link src='./index.less' />
+    //more details exec command  'sbr run example/tradition'
+```
 - update cli example app.
 
 
