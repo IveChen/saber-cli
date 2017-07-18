@@ -11,6 +11,7 @@ let getBaseConfig = require('../webpack.base');
 
 function start(devConfig, options) {
     let spinner = ora();
+    process.env.NODE_ENV = 'development';
     spinner.start('starting server');
     let app = express();
     let compiler = webpack(generateDevConfig(devConfig, options));
@@ -24,13 +25,14 @@ function start(devConfig, options) {
             if (message.indexOf('built') > -1) {
                 //build success
                 spinner.succeed(`${chalk.red(moment().format('hh:mm:ss:SSS'))}: ${message}`);
+                hotMiddleware.publish({action: 'reload'});
             } else {
                 spinner.start(message);
             }
         }
     });
 
-    process.env.NODE_ENV = 'development';
+
     devConfig.port = devConfig.port || 8081;
 
     app.use(require('connect-history-api-fallback')());
@@ -49,7 +51,7 @@ function start(devConfig, options) {
 
     compiler.plugin('compilation', function (compilation) {
         compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
-            hotMiddleware.publish({action: 'reload'});
+            // hotMiddleware.publish({action: 'reload'});
             cb();
         });
     });

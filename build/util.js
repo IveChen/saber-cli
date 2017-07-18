@@ -12,7 +12,7 @@ function addEntry(directory, ext, entries, chunks, entryName) {
     let entry = path.join(directory, `index.${ext}`);
     if (fs.existsSync(entry)) {
         // entryName = `${entryName}_${ext}`;
-        entries[entryName] = entry;
+        entries[entryName] = `${entry}?__webpack__`;
         chunks.push(entryName)
     }
 }
@@ -41,53 +41,90 @@ function buildEntriesAndHtmlWebpackPlugins(projectPath) {
 }
 
 function getStyleLoaders(ext, options) {
-    let loaderConfig = {
-        test: new RegExp(`.${ext}$`),
+    let issuerJSLoader = ext === 'css' ? {
+        issuer: /\.js$/,
+        loader: ExtractTextPlugin.extract('css-loader')
+    } : {
+        issuer: /\.js$/,
+        loaders: ExtractTextPlugin.extract(['css-loader', `${ext}-loader`])
+    };
+    return [{
+        test: new RegExp(`\.${ext}$`),
         include: [
             path.join(options.projectPath, 'src')
-        ]
+        ],
+        exclude: [
+            path.join(options.projectPath, 'node_modules'),
+            path.join(options.cliPath, 'node_modules')
+        ],
+        oneOf: [issuerJSLoader, {
+            issuer: /\.html$/,
+            use: [{
+                loader: 'file-loader',
+                options: {
+                    name: `styles/[name]_${ext}.[hash:8].css`
+                }
+            }, {
+                loader: 'extract-loader'
+            }, {
+                loader: 'css-loader'
+            }].concat(ext === 'css' ? [] : [{
+                loader: `${ext}-loader`
+            }])
+        }]
+    }];
+}
+
+function getScriptLoaders(options) {
+
+    let babelLoaderConfig = {
+        loader: 'babel-loader',
+        options: {
+            presets: [require('babel-preset-env'), require('babel-preset-stage-2')],
+            plugins: [
+                require('babel-plugin-transform-runtime'),
+                require('babel-plugin-add-module-exports')
+            ],
+            comments: false,
+        }
     };
 
-
-    let loaders = [];
-    //fuck extract text plugin loaders/loader bug.
-    if (ext === 'css') {
-        loaders.push(Object.assign({}, loaderConfig, {
-            issuer: /\.js$/,
-            loader: ExtractTextPlugin.extract('css-loader')
-        }));
-    } else {
-        loaders.push(Object.assign({}, loaderConfig, {
-            issuer: /\.js$/,
-            loaders: ExtractTextPlugin.extract(['css-loader', `${ext}-loader`])
-        }))
-    }
-
-    let htmlAsssetsLoaderList = [{
-        loader: 'file-loader',
-        options: {
-            name: `styles/[name]_${ext}.[hash:8].css`
-        }
-    }, {
-        loader: 'extract-loader'
+    return [{
+        test: /\.js/,
+        include: [path.join(options.projectPath, 'src')],
+        exclude: [path.join(options.projectPath, 'node_modules'), path.join(options.cliPath, 'node_modules')],
+        oneOf: [{
+            resourceQuery: /__webpack__/,
+            use: [babelLoaderConfig]
+        }, {
+            issuer: /html$/,
+            oneOf: [{
+                resourceQuery: /source/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: 'scripts/[name].[hash:8].js'
+                    }
+                }]
+            }, {
+                use: [{
+                    loader: 'entry-loader',
+                    options: {
+                        name: 'scripts/[name].[hash:8].js',
+                        projectPath: options.projectPath
+                    }
+                }, babelLoaderConfig]
+            }]
+        }, {
+            issuer: /js$/,
+            use: [babelLoaderConfig]
+        }]
     }];
-    if (ext !== 'css') {
-        htmlAsssetsLoaderList.push({
-            loader: 'css-loader'
-        })
-    }
-    htmlAsssetsLoaderList.push({
-        loader: `${ext}-loader`
-    });
-    loaders.push(Object.assign({}, loaderConfig, {
-        issuer: /\.html$/,
-        loaders: htmlAsssetsLoaderList
-    }));
-    return loaders;
 }
 
 module.exports = {
     getPath,
     buildEntriesAndHtmlWebpackPlugins,
-    getStyleLoaders
+    getStyleLoaders,
+    getScriptLoaders
 };

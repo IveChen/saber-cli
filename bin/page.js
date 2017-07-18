@@ -58,7 +58,7 @@ function createPage(pagePath, cliPath, projectName, pageName) {
     Metalsmith(path.join(cliPath, 'templates/page'))
         .source('.') //默认是src，需要设置为template
         .use(askQuestions({
-            pageTitle: `page ${pageName} - project ${projectName}`,
+            pageTitle: pageName,
         }, function (answers) {
             initConfigs = answers;
             initConfigs.create_time = moment().format('YYYY-MM-DD');
@@ -81,6 +81,7 @@ function createPage(pagePath, cliPath, projectName, pageName) {
                 throw error;
             }
             spinner.succeed(`create page <${pageName}>`);
+            console.log(chalk.red(`please run 'sbr run' again.`))
             spinner.stop()
         });
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../../assets/third-party/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./test.less">
+    <link rel="stylesheet" href="./test.css">
+    <title>example/tradition</title>
+</head>
+<body>
+    <div class="container">
+        <div class="back-top">
+            <a href="/example.html">返回</a>
+        </div>
+        <div class="jumbotron">
+            <div class="test-css">style from test.css</div>
+            <div class="test-less">style from test.less</div>
+            <div id="testJs">style from test.js</div>
+        </div>
+        <div class="jumbotron">
+usage:
+            <pre>
+&lt;script src='./test.js' />
+&lt;script src='./test.js?source' /> //only copy not babel transform.for third-party lib script
+&lt;link href='./test.css' />
+&lt;link href='./test.less' />
+            </pre>
+fetures in developing
+<pre>
+&lt;script src='./test.js?inline' /> //mark assets content to html
+&lt;script src='./test.js?ie9' /> //mark assets content ie only
+</pre>
+        </div>
+    </div>
+    <script src="./test.js"></script>
+    <script src="./test_source.js?source"></script>
+</body>
+</html>
