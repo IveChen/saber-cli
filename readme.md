@@ -59,8 +59,14 @@ sbr -V
 - tag include source rules.
 > eg:
 ```html
-    <script src='./index.js?ie9' />
     <script src='./index.js?inline' />
+```
+- sprite support
+> eg
+```css
+    .test{
+        background:url('./saber.png?sprite')
+    }
 ```
 - tpl support
 > for some traditional projects.
@@ -79,11 +85,20 @@ sbr -V
 - upgrade project when cli is update before it's not stable.
 
 ### History
+#### 2017.7.19
+- support ie tag rules
+```
+    <script src='./index.js?ie=9'></script> //ie9
+    <script src='./index.js?ie=9-'></script> //ie8,ie7 ...
+    <script src='./index.js?ie=9+'></script> //ie9 ie10 ..
+    <script src='./index.js?ie=9-11'></script> //ie9 ie10 ie11
+```
+
 #### 2017.7.18
 - support tag import rules.
 ```
-    <script src='./index.js' />
-    <script src='./index.js?source' />
+    <script src='./index.js' ></script>
+    <script src='./index.js?source' ></script>
     <link src='./index.css' />
     <link src='./index.less' />
     //more details exec command  'sbr run example/tradition'

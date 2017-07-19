@@ -3,6 +3,7 @@ let glob = require('glob');
 let fs = require('fs');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
+let slash = require('slash');
 
 function getPath(projectPath, ...otherPath) {
     return path.join(projectPath, ...otherPath);
@@ -11,7 +12,7 @@ function getPath(projectPath, ...otherPath) {
 function addEntry(directory, ext, entries, chunks, entryName) {
     let entry = path.join(directory, `index.${ext}`);
     if (fs.existsSync(entry)) {
-        // entryName = `${entryName}_${ext}`;
+        entryName = slash(entryName).replace(/\//g,'_')
         entries[entryName] = `${entry}?__webpack__`;
         chunks.push(entryName)
     }

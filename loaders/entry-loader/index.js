@@ -1,9 +1,10 @@
 //source core https://github.com/eoin/entry-loader
 //modify to change some error.
 
-var SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
-var utils = require('loader-utils');
-var path = require('path');
+let SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
+let utils = require('loader-utils');
+let path = require('path');
+let slash = require('slash');
 
 module.exports = function () {
     // ...
@@ -26,7 +27,6 @@ function runCompiler(compiler, callback) {
         } else if (entries[0]) {
             var url = entries[0].files[0];
             callback(null, getSource(url));
-            ;
         } else {
             callback(null, null);
         }
@@ -34,7 +34,8 @@ function runCompiler(compiler, callback) {
 }
 
 function createCompiler(loader, request, options) {
-    var entryName = path.basename(path.dirname(loader.resourcePath));
+    var entryName = loader.resourcePath.replace(path.join(options.projectPath, 'src', 'app',), '').replace(/\.js/, '');
+    entryName = slash(entryName).replace('/','').replace(/\//g, '_');
     var compiler = getCompilation(loader).createChildCompiler('entry', options);
     var plugin = new SingleEntryPlugin(loader.context, '!!' + request, entryName);
     compiler.apply(plugin);

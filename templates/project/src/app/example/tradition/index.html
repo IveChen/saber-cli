@@ -23,19 +23,26 @@
         <div class="jumbotron">
 usage:
             <pre>
-&lt;script src='./test.js' />
-&lt;script src='./test.js?source' /> //only copy not babel transform.for third-party lib script
+&lt;script src='./test.js' >&lt;/script>
+&lt;script src='./test.js?source' >&lt;/script>> //only copy not babel transform.for third-party lib script
 &lt;link href='./test.css' />
 &lt;link href='./test.less' />
+&lt;script src='./test.js?ie=10' >&lt;/script> //ie 10
+&lt;script src='./test.js?ie=10-' >&lt;/script> //ie9 ie8 ....
+&lt;script src='./test.js?ie=10+' >&lt;/script> // ie10 ,ie11 ...
+&lt;script src='./test.js?ie=10-11' >&lt;/script> //ie10 ,ie11
             </pre>
 fetures in developing
 <pre>
-&lt;script src='./test.js?inline' /> //mark assets content to html
-&lt;script src='./test.js?ie9' /> //mark assets content ie only
+&lt;script src='./test.js?inline' >&lt;/script> //mark assets content to html
 </pre>
         </div>
     </div>
     <script src="./test.js"></script>
     <script src="./test_source.js?source"></script>
+    <script src="./ie.js?ie=10&resource"></script>
+    <script src="./ie.js?ie=10-&resource"></script>
+    <script src="./ie.js?ie=10+&resource"></script>
+    <script src="./ie.js?ie=10-11&resource"></script>
 </body>
 </html>

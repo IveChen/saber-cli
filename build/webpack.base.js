@@ -28,7 +28,8 @@ module.exports = function (userConfig, options) {
                 path.join(options.cliPath, 'node_modules')
             ],
             alias: {
-                'entry-loader': path.join(options.cliPath, 'loaders', 'entry-loader', 'index.js')
+                'entry-loader': path.join(options.cliPath, 'loaders', 'entry-loader', 'index.js'),
+                'ie-loader': path.join(options.cliPath, 'loaders', 'ie-loader', 'index.js')
             }
         },
         entry: Object.assign({
@@ -80,6 +81,8 @@ module.exports = function (userConfig, options) {
                         options: {
                             attrs: userConfig.htmlAssets || ['script:src', 'img:src', 'link:href']
                         }
+                    }, {
+                        loader: 'ie-loader'
                     }]
                 }
 
