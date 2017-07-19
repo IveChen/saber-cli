@@ -12,7 +12,7 @@ function getPath(projectPath, ...otherPath) {
 function addEntry(directory, ext, entries, chunks, entryName) {
     let entry = path.join(directory, `index.${ext}`);
     if (fs.existsSync(entry)) {
-        entryName = slash(entryName).replace(/\//g,'_')
+        entryName = slash(entryName).replace(/\//g, '_')
         entries[entryName] = `${entry}?__webpack__`;
         chunks.push(entryName)
     }
@@ -81,7 +81,7 @@ function getScriptLoaders(options) {
     let babelLoaderConfig = {
         loader: 'babel-loader',
         options: {
-            presets: [require('babel-preset-env'), require('babel-preset-stage-2')],
+            presets: [require('babel-preset-env'), require('babel-preset-stage-2'), require('babel-preset-react')],
             plugins: [
                 require('babel-plugin-transform-runtime'),
                 require('babel-plugin-add-module-exports')
@@ -120,6 +120,9 @@ function getScriptLoaders(options) {
             issuer: /js$/,
             use: [babelLoaderConfig]
         }]
+    }, {
+        test: /\.jsx$/,
+        use: [babelLoaderConfig]
     }];
 }
 

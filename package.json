@@ -1,6 +1,6 @@
 {
   "name": "saber-cli",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "an cli for annoying webpack config",
   "main": "index.js",
   "scripts": {
@@ -23,15 +23,16 @@
   "bin": {
     "sbr": "index.js"
   },
+  "preferGlobal": false,
   "dependencies": {
     "async": "^2.5.0",
-    "atpl": "^0.9.3",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.1",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "bluebird": "^3.5.0",
     "chalk": "^2.0.1",
@@ -63,11 +64,9 @@
     "shelljs": "^0.7.8",
     "slash": "^1.0.0",
     "style-loader": "^0.18.2",
+    "twig": "^1.10.5",
     "url": "^0.11.0",
     "url-loader": "^0.5.9",
-    "vue": "^2.4.1",
-    "vue-loader": "^12.2.2",
-    "vue-template-compiler": "^2.4.1",
     "webpack": "^3.2.0",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-hot-middleware": "^2.18.2",

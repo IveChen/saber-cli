@@ -15,6 +15,8 @@ let spinner = null;
 
 //generate project with template
 module.exports = function (projectPath, cliPath, projectName) {
+    let initAnswers = {};
+    let frameworkConfig = {};
     spinner = ora(`creating <${projectName}> project`);
     Metalsmith(path.join(cliPath, 'templates/project'))
         .source('.') //默认是src，需要设置为template
@@ -25,7 +27,11 @@ module.exports = function (projectPath, cliPath, projectName) {
             author: ''
         }, function (answers) {
             initConfigs = answers;
+            initAnswers = Object.assign({}, answers);
             initConfigs.create_time = moment().format('YYYY-MM-DD');
+            answers.frameworks.forEach(function (value) {
+                frameworkConfig[value] = true;
+            });
         }))
         .use(util.renderTemplateFile(function () {
             return initConfigs;
@@ -41,7 +47,11 @@ module.exports = function (projectPath, cliPath, projectName) {
                 throw error;
             }
             spinner.succeed(`copy template to <${projectName}> project`);
-            installDependencies(projectPath, projectName);
+            spinner.start(`copy example`);
+            copyExamples(projectPath, cliPath, frameworkConfig).then(function () {
+                spinner.succeed(`copy example`);
+                installDependencies(projectPath, projectName, initAnswers, frameworkConfig);
+            });
         });
 };
 
@@ -63,15 +73,55 @@ function installNpmPackage(packName, flag = '') {
 }
 
 //install some npm dependencies
-function installDependencies(projectPath, projectName) {
-    const packages = [];
+function installDependencies(projectPath, projectName, answers, frameworkConfig) {
+    let packages = [];
+    let vuePackages = [{
+        name: 'vue',
+        flag: '--save'
+    }, {
+        name: 'vue-loader',
+        flag: '--save-dev'
+    }, {
+        name: 'vue-template-compiler',
+        flag: '--save-dev'
+    }, {
+        name: 'vue-router',
+        flag: '--save'
+    }, {
+        name: 'axios',
+        flag: '--save'
+    }, {
+        name: 'vuex',
+        flag: '--save'
+    }];
+
+    let reactPackages = [{
+        name: 'react',
+        flag: '--save'
+    }, {
+        name: 'redux',
+        flag: '--save'
+    }, {
+        name: 'react-router',
+        flag: '--save'
+    }, {
+        name: 'react-dom',
+        flag: '--save'
+    }];
+    if (frameworkConfig.vue) {
+        packages = packages.concat(vuePackages);
+    }
+    if (frameworkConfig.react) {
+        packages = packages.concat(reactPackages)
+    }
     if (packages.length) {
-        spinner.start(chalk.grey('install npm packages'));
+        spinner.start(chalk.grey(`install npm packages for ${answers.frameworks} frameworks`));
         spinner.stopAndPersist();
         Promise.reduce(packages, (currentPackage, nextPackage, index) => {
             return new Promise((resolve, reject) => {
                 currentPackage = packages[index];
                 nextPackage = packages[index + 1];
+                shell.cd(projectPath);
                 installNpmPackage(currentPackage.name, currentPackage.flag).then(function () {
                     resolve(nextPackage);
                 }, function () {
@@ -83,6 +133,7 @@ function installDependencies(projectPath, projectName) {
         }, 0).then(function () {
                 spinner.succeed(`create <${projectName}> project at ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
                 spinner.stop();
+                console.log(chalk.grey('more packages should manually install by npm yourself'))
                 showHelpMessage(projectName);
             }, function (packName, code, stderror) {
                 let runInfo = packages.map(function (package) {
@@ -98,6 +149,7 @@ function installDependencies(projectPath, projectName) {
             }
         )
     } else {
+        console.log(chalk.grey('0 package need to install.should manually install by npm yourself'))
         spinner.succeed(`create <${projectName}> project at ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
         spinner.stop();
         showHelpMessage(projectName);
@@ -120,4 +172,32 @@ function askQuestions(defaultOptions, callback) {
             done();
         })
     }
+}
+
+function copyExamples(projectPath, cliPath, config) {
+    return new Promise((resolve, reject) => {
+        Metalsmith(path.join(cliPath, 'templates/example'))
+            .source(".")
+            .use(util.renderTemplateFile(function () {
+                return config;
+            }))
+            .ignore(function (path) {
+                let ignoreFlag = false;
+                if (!config.vue) {
+                    ignoreFlag = ignoreFlag || path.indexOf('vue') > -1;
+                }
+                if (!config.react) {
+                    ignoreFlag = ignoreFlag || path.indexOf('react') > -1;
+                }
+                return ignoreFlag;
+            })
+            .destination(path.join(projectPath, 'src', 'app', 'example'))
+            .build(function (error) {
+                if (error) {
+                    reject();
+                    throw error
+                }
+                resolve();
+            })
+    })
 }

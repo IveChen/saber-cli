@@ -74,9 +74,6 @@ sbr -V
 - rem support
 > for some ie9+ projects.
 
-- project frameworks
-> may need choose project main frameworks:react/vue/jquery
-
 - custom module.rules
 > enable user defined rules
 
@@ -85,7 +82,14 @@ sbr -V
 - upgrade project when cli is update before it's not stable.
 
 ### History
+
 #### 2017.7.19
+
+
+v0.0.9
+- update create project flow.
+- react support
+- fix windows system path bug
 - support ie tag rules
 ```
     <script src='./index.js?ie=9'></script> //ie9
@@ -95,6 +99,7 @@ sbr -V
 ```
 
 #### 2017.7.18
+v0.0.6
 - support tag import rules.
 ```
     <script src='./index.js' ></script>

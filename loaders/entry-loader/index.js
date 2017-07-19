@@ -34,7 +34,7 @@ function runCompiler(compiler, callback) {
 }
 
 function createCompiler(loader, request, options) {
-    var entryName = loader.resourcePath.replace(path.join(options.projectPath, 'src', 'app',), '').replace(/\.js/, '');
+    var entryName = loader.resourcePath.replace(path.join(options.projectPath, 'src', 'app'), '').replace(/\.js/, '');
     entryName = slash(entryName).replace('/','').replace(/\//g, '_');
     var compiler = getCompilation(loader).createChildCompiler('entry', options);
     var plugin = new SingleEntryPlugin(loader.context, '!!' + request, entryName);

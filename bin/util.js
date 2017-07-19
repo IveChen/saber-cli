@@ -32,7 +32,7 @@ function renderTemplateFile(getConfig) {
             if (!/{{([^{}]+)}}/g.test(str)) {
                 return next()
             }
-            consolidate.atpl.render(str, getConfig(), function (error, res) {
+            consolidate.twig.render(str, getConfig(), function (error, res) {
                 if (error) {
                     error.message = `[${file}] ${error.message}`;
                     return next(error);

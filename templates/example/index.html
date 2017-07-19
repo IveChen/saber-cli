@@ -34,18 +34,27 @@
             </a>
         </li>
         <li class="list-group-item">
-            <a href="/example/vue.html">
-                <h4>example vue</h4>
-                <div>saber default provide vue support</div>
-                <div>index.less import by index.js default</div>
-            </a>
-        </li>
-        <li class="list-group-item">
             <a href="/example/tradition.html">
                 <h4>example tradition</h4>
                 <div>tradition method to develop project</div>
             </a>
         </li>
+        {% if vue == true %}
+        <li class="list-group-item">
+            <a href="/example/vue.html">
+                <h4>example vue</h4>
+                <div>saber-cli install some vue relative packages for you</div>
+            </a>
+        </li>
+        {% endif %}
+        {% if react == true %}
+        <li class="list-group-item">
+            <a href="/example/react.html">
+                <h4>example react</h4>
+                <div>saber-cli install some react relative packages for you</div>
+            </a>
+        </li>
+        {% endif %}
     </ul>
 </div>
 </body>

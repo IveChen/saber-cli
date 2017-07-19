@@ -17,5 +17,15 @@ module.exports = function (defaultOptions) {
         name: 'author',
         message: `project author`,
         default: os.userInfo().username
+    }, {
+        name: 'frameworks',
+        message: 'project main frameworks.(key space to choose)',
+        type: 'checkbox',
+        choices: [{
+            value: 'vue',
+            checked: true
+        }, {
+            value: 'react'
+        }]
     }]);
 };
