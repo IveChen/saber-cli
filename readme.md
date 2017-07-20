@@ -90,7 +90,8 @@ sbr -V
 ### History
 
 #### 2017.7.20
-v0.0.10
+v0.0.11
+- template support,use underscore-template.
 - proxy server support in development mode.
 
 #### 2017.7.19

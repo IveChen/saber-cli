@@ -1,6 +1,6 @@
 {
   "name": "saber-cli",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "description": "an cli for annoying webpack config",
   "main": "index.js",
   "scripts": {
@@ -67,6 +67,7 @@
     "slash": "^1.0.0",
     "style-loader": "^0.18.2",
     "twig": "^1.10.5",
+    "underscore-template-loader": "^0.7.3",
     "url": "^0.11.0",
     "url-loader": "^0.5.9",
     "webpack": "^3.2.0",

@@ -87,10 +87,10 @@ function installDependencies(projectPath, projectName, answers, frameworkConfig)
         name: 'mockjs',
         flag: '--save'
     }, {
-        name: 'art-template',
-        flag: '--save'
+        name: 'underscore-template-loader',
+        flag: '--save-dev'
     }, {
-        name: 'art-template-loader',
+        name: 'lodash',
         flag: '--save-dev'
     }];
     let vuePackages = [{

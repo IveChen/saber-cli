@@ -59,7 +59,7 @@ function getStyleLoaders(ext, options) {
             path.join(options.cliPath, 'node_modules')
         ],
         oneOf: [issuerJSLoader, {
-            issuer: /\.html$/,
+            issuer: /\.(html|tpl)$/,
             use: [{
                 loader: 'file-loader',
                 options: {
@@ -98,7 +98,7 @@ function getScriptLoaders(options) {
             resourceQuery: /__webpack__/,
             use: [babelLoaderConfig]
         }, {
-            issuer: /html$/,
+            issuer: /\.(html|tpl)$/,
             oneOf: [{
                 resourceQuery: /source/,
                 use: [{

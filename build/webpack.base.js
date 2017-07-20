@@ -82,16 +82,30 @@ module.exports = function (userConfig, options) {
                 },
                 {
                     test: /\.html$/,
-                    loader: [{
-                        loader: 'html-loader',
-                        options: {
-                            attrs: userConfig.htmlAssets || ['script:src', 'img:src', 'link:href']
+                    use: [
+                        {
+                            loader: 'underscore-template-loader',
+                            query: {
+                                attributes: userConfig.htmlAssets || ['script:src', 'img:src', 'link:href']
+                            }
+                        }, {
+                            loader: 'ie-loader',
+                            query: {
+                                attributes: userConfig.htmlAssets || ['script:src', 'img:src', 'link:href']
+                            }
+                        }
+                    ]
+                }, {
+                    test: /\.tpl$/,
+                    use: [{
+                        loader: 'underscore-template-loader',
+                        query: {
+                            attributes: userConfig.htmlAssets || ['script:src', 'img:src', 'link:href']
                         }
                     }, {
                         loader: 'ie-loader'
                     }]
                 }
-
             ]
         },
         plugins: [
