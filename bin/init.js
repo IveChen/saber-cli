@@ -5,6 +5,7 @@ let ora = require('ora');
 let shell = require('shelljs');
 let moment = require('moment');
 let Promise = require('bluebird');
+let del = require('del');
 
 let util = require('./util');
 let ask = require('./init_questions');
@@ -18,41 +19,43 @@ module.exports = function (projectPath, cliPath, projectName) {
     let initAnswers = {};
     let frameworkConfig = {};
     spinner = ora(`creating <${projectName}> project`);
-    Metalsmith(path.join(cliPath, 'templates/project'))
-        .source('.') //默认是src，需要设置为template
-        .use(askQuestions({
-            projectName,
-            version: '1.0.0',
-            description: `this is ${projectName} project`,
-            author: ''
-        }, function (answers) {
-            initConfigs = answers;
-            initAnswers = Object.assign({}, answers);
-            initConfigs.create_time = moment().format('YYYY-MM-DD');
-            answers.frameworks.forEach(function (value) {
-                frameworkConfig[value] = true;
+    del(path.join(projectPath, '**'), {dryRun: true, force: true}).then((paths) => {
+        Metalsmith(path.join(cliPath, 'templates/project'))
+            .source('.') //默认是src，需要设置为template
+            .use(askQuestions({
+                projectName,
+                version: '1.0.0',
+                description: `this is ${projectName} project`,
+                author: ''
+            }, function (answers) {
+                initConfigs = Object.assign({}, answers, {
+                    create_time: moment().format('YYYY-MM-DD')
+                });
+                initAnswers = Object.assign({}, answers);
+                frameworkConfig.vue = answers.frameworks.indexOf('vue') > -1;
+                frameworkConfig.react = answers.frameworks.indexOf('react') > -1;
+            }))
+            .use(util.renderTemplateFile(function () {
+                return initConfigs;
+            })) //渲染模板
+            .use(function (files, metalsmith, done) {
+                spinner.start();
+                done();
+            })
+            .destination(projectPath)
+            .build(function (error) {
+                if (error) {
+                    spinner.fail(`copy template to <${projectName}> project`);
+                    throw error;
+                }
+                spinner.succeed(`copy template to <${projectName}> project`);
+                spinner.start(`copy examples`);
+                copyExamples(projectPath, cliPath, frameworkConfig).then(function () {
+                    spinner.succeed(`copy examples`);
+                    installDependencies(projectPath, projectName, initAnswers, frameworkConfig);
+                });
             });
-        }))
-        .use(util.renderTemplateFile(function () {
-            return initConfigs;
-        })) //渲染模板
-        .use(function (files, metalsmith, done) {
-            spinner.start();
-            done();
-        })
-        .destination(projectPath)
-        .build(function (error) {
-            if (error) {
-                spinner.fail(`copy template to <${projectName}> project`);
-                throw error;
-            }
-            spinner.succeed(`copy template to <${projectName}> project`);
-            spinner.start(`copy example`);
-            copyExamples(projectPath, cliPath, frameworkConfig).then(function () {
-                spinner.succeed(`copy example`);
-                installDependencies(projectPath, projectName, initAnswers, frameworkConfig);
-            });
-        });
+    })
 };
 
 //install npm package method
@@ -74,7 +77,22 @@ function installNpmPackage(packName, flag = '') {
 
 //install some npm dependencies
 function installDependencies(projectPath, projectName, answers, frameworkConfig) {
-    let packages = [];
+    let packages = [{
+        name: 'axios',
+        flag: '--save'
+    }, {
+        name: 'css-loader',
+        flag: '--save-dev'
+    }, {
+        name: 'mockjs',
+        flag: '--save'
+    }, {
+        name: 'art-template',
+        flag: '--save'
+    }, {
+        name: 'art-template-loader',
+        flag: '--save-dev'
+    }];
     let vuePackages = [{
         name: 'vue',
         flag: '--save'
@@ -86,9 +104,6 @@ function installDependencies(projectPath, projectName, answers, frameworkConfig)
         flag: '--save-dev'
     }, {
         name: 'vue-router',
-        flag: '--save'
-    }, {
-        name: 'axios',
         flag: '--save'
     }, {
         name: 'vuex',
@@ -109,10 +124,10 @@ function installDependencies(projectPath, projectName, answers, frameworkConfig)
         flag: '--save'
     }];
     if (frameworkConfig.vue) {
-        packages = packages.concat(vuePackages);
+        packages = [...packages, ...vuePackages];
     }
     if (frameworkConfig.react) {
-        packages = packages.concat(reactPackages)
+        packages = [...packages, ...reactPackages];
     }
     if (packages.length) {
         spinner.start(chalk.grey(`install npm packages for ${answers.frameworks} frameworks`));
@@ -133,7 +148,7 @@ function installDependencies(projectPath, projectName, answers, frameworkConfig)
         }, 0).then(function () {
                 spinner.succeed(`create <${projectName}> project at ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
                 spinner.stop();
-                console.log(chalk.grey('more packages should manually install by npm yourself'))
+                console.log(chalk.grey('more packages should manually install by npm yourself'));
                 showHelpMessage(projectName);
             }, function (packName, code, stderror) {
                 let runInfo = packages.map(function (package) {

@@ -3,6 +3,7 @@ let webpack = require('webpack');
 let chalk = require('chalk');
 let path = require('path');
 let ora = require('ora');
+let fs = require('fs');
 let merge = require('webpack-merge');
 let moment = require('moment');
 
@@ -46,6 +47,13 @@ function start(devConfig, options) {
 
     app.use(hotMiddleware);
     spinner.succeed('enable webpack hot reload module');
+
+    let proxyMiddleware = require('http-proxy-middleware');
+    Object.keys(devConfig.proxyTables).forEach(function (target) {
+        app.use(target, proxyMiddleware(target, devConfig.proxyTables[target]))
+    });
+
+    spinner.succeed('enable proxy server');
 
     spinner.start('starting express server');
 

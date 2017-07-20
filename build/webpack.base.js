@@ -37,14 +37,20 @@ module.exports = function (userConfig, options) {
         }, entries),
         module: {
             rules: [
-                // {
-                //     test: /\.js$/,
-                //     enforce: 'pre',
-                //     exclude: [path.join(options.cliPath, 'node_modules'), path.join(options.projectPath, 'node_modules')],
-                //     use: [{
-                //         loader: 'eslint-loader'
-                //     }]
-                // },
+                {
+                    test: /\.js$/,
+                    enforce: 'pre',
+                    include: [path.join(options.projectPath, 'src')],
+                    exclude: [path.join(options.cliPath, 'node_modules'), path.join(options.projectPath, 'node_modules')],
+                    use: [{
+                        loader: 'eslint-loader',
+                        options: {
+                            emitError: true,
+                            emitWarning: true,
+                            configFile: path.join(options.projectPath, '.eslintrc')
+                        }
+                    }]
+                },
                 ...util.getScriptLoaders(options),
                 ...util.getStyleLoaders('css', options),
                 ...util.getStyleLoaders('less', options),

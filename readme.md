@@ -61,6 +61,7 @@ sbr -V
 ```html
     <script src='./index.js?inline' />
 ```
+
 - sprite support
 > eg
 ```css
@@ -68,6 +69,7 @@ sbr -V
         background:url('./saber.png?sprite')
     }
 ```
+
 - tpl support
 > for some traditional projects.
 
@@ -81,7 +83,15 @@ sbr -V
 
 - upgrade project when cli is update before it's not stable.
 
+- mock command
+
+- test command
+
 ### History
+
+#### 2017.7.20
+v0.0.10
+- proxy server support in development mode.
 
 #### 2017.7.19
 
@@ -92,6 +102,9 @@ v0.0.9
 - fix windows system path bug
 - support ie tag rules
 ```
+    // ie10 ie11 not support if condition.
+    // you can use <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9"> to make it possible
+    // the best way is use modernizr.js or feature.js to check browser features.
     <script src='./index.js?ie=9'></script> //ie9
     <script src='./index.js?ie=9-'></script> //ie8,ie7 ...
     <script src='./index.js?ie=9+'></script> //ie9 ie10 ..

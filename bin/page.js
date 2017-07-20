@@ -60,10 +60,11 @@ function createPage(pagePath, cliPath, projectName, pageName) {
         .use(askQuestions({
             pageTitle: pageName,
         }, function (answers) {
-            initConfigs = answers;
-            initConfigs.create_time = moment().format('YYYY-MM-DD');
-            initConfigs.author = os.userInfo().username;
-            initConfigs.pageName = pageName;
+            initConfigs = Object.assign({}, answers, {
+                create_time: moment().format('YYYY-MM-DD'),
+                author: os.userInfo().username,
+                pageName
+            });
 
         }))
         .use(util.renderTemplateFile(function () {
@@ -77,7 +78,7 @@ function createPage(pagePath, cliPath, projectName, pageName) {
         .build(function (error) {
             if (error) {
                 spinner.fail(`create page <${pageName}>`);
-                spinner.stop()
+                spinner.stop();
                 throw error;
             }
             spinner.succeed(`create page <${pageName}>`);
