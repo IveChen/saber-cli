@@ -70,16 +70,8 @@ sbr -V
     }
 ```
 
-- tpl support
-> for some traditional projects.
-
 - rem support
 > for some ie9+ projects.
-
-- custom module.rules
-> enable user defined rules
-
-- base project config
 
 - upgrade project when cli is update before it's not stable.
 

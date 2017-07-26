@@ -1,6 +1,6 @@
 {
   "name": "saber-cli",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "an cli for annoying webpack config",
   "main": "index.js",
   "scripts": {
@@ -73,7 +73,7 @@
     "webpack": "^3.2.0",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-hot-middleware": "^2.18.2",
-    "webpack-merge": "^4.1.0"
-  },
-  "devDependencies": {}
+    "webpack-merge": "^4.1.0",
+    "cssnano": "^3.10.0"
+  }
 }
