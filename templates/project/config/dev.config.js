@@ -1,16 +1,16 @@
 let baseConfig = require('./base.js');
 
 module.exports = Object.assign(baseConfig, {
-    //https://github.com/chimurai/http-proxy-middleware#http-proxy-options
-    //proxy
+    //代理服务器配置
+    //更多配置细节参考 https://github.com/chimurai/http-proxy-middleware#http-proxy-options
     proxyTables: {
         // '/api.php': {
         //     target: 'http://www.example.com',
         //     changeOrigin: true
         // }
     },
-    //the page which load when saber-cli open the browser
+    //开发服务器运行时默认打开的浏览器页面
     home: 'example',
-    //the port when saber-cli run devServer
+    //开发服务器运行时的端口号
     port: 9091
 });

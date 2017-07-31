@@ -6,7 +6,7 @@ let webpack = require('webpack');
 let util = require('./util');
 
 module.exports = function (userConfig, options) {
-    let {entries, plugins} = util.buildEntriesAndHtmlWebpackPlugins(options.projectPath);
+    let {entries, plugins} = util.buildEntriesAndPlugins(options.projectPath,userConfig);
     return {
         output: {
             path: util.getPath(options.projectPath, 'dist'),

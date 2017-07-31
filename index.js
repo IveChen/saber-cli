@@ -17,7 +17,7 @@ program.version(config.version);
 
 //init project command
 program.command('init')
-    .description('init project in current folder')
+    .description('在当前目录初始化创建工程')
     .action(function () {
         let projectPath = process.cwd();
         let projectName = path.basename(projectPath);
@@ -27,13 +27,13 @@ program.command('init')
                 inquirer.prompt([{
                     type: 'confirm',
                     name: 'ok',
-                    message: `folder <${projectName}> is not empty,continue will clean files and folders. continue?`,
+                    message: `目录 <${projectName}> 不为空，继续将清空目录，是否继续?`,
                     default: true
                 }]).then(function (answers) {
                     if (answers.ok) {
                         cmdInit(projectPath, __dirname, projectName);
                     } else {
-                        console.log(chalk.red(`create <${projectName}> project stopped`))
+                        console.log(chalk.red(`停止创建工程 <${projectName}>`))
                     }
                 })
             } else {
@@ -43,13 +43,13 @@ program.command('init')
     })
     .on('--help', function () {
         console.log('');
-        console.log('Example :');
+        console.log('示例 :');
         console.log(chalk.grey('sbr init'));
     });
 
 //create project command
 program.command('create <projectName>')
-    .description('create <projectName> project in current folder')
+    .description('在当前目录创建子目录 <projectName> 并初始化工程')
     .action(function (projectName) {
         let projectPath = path.join(process.cwd(), projectName);
         fs.stat(projectPath, function (error, stats) {
@@ -59,13 +59,13 @@ program.command('create <projectName>')
                 inquirer.prompt([{
                     type: 'confirm',
                     name: 'ok',
-                    message: `folder <${projectName}> is not empty,continue will clean files and folders. continue?`,
+                    message: `目录 <${projectName}> 不为空，继续将清空目录，是否继续?`,
                     default: true
                 }]).then(function (answers) {
                     if (answers.ok) {
                         cmdInit(projectPath, __dirname, projectName);
                     } else {
-                        console.log(chalk.red(`create <${projectName}> project stopped`))
+                        console.log(chalk.red(`停止创建工程 <${projectName}>`))
                     }
                 })
             }
@@ -73,45 +73,45 @@ program.command('create <projectName>')
     })
     .on('--help', function () {
         console.log('');
-        console.log('Example :');
-        console.log(chalk.grey('sbr create testProject'));
+        console.log('示例 :');
+        console.log(chalk.grey('sbr create hello-world'));
     });
 
 //add page command
 program.command('add-page <pageName>')
-    .description('add <pageName> page to src/app/<pageName>')
+    .description('添加页面<pageName>到工程目录下的 src/app/<pageName>')
     .alias('page')
     .action(function (pageName) {
         cmdPage(process.cwd(), __dirname, pageName)
     })
     .on('--help', function () {
         console.log('');
-        console.log('Example :');
+        console.log('示例 :');
         console.log(chalk.grey('sbr page user/list'));
     });
 
 // run page
 
 program.command('run [pageName]')
-    .description('run project with [pageName] page')
+    .description('运行服务器，并启动打开页面 [pageName]')
     .action(function (pageName) {
         cmdRun(process.cwd(), __dirname, pageName)
     })
     .on('--help', function () {
         console.log('');
-        console.log('Example :');
+        console.log('示例 :');
         console.log(chalk.grey('sbr run user/list'));
         console.log(chalk.grey('sbr run'))
     });
 
 program.command('build')
-    .description('build project')
+    .description('build 工程')
     .action(function () {
         cmdBuild(process.cwd(), __dirname)
     })
     .on('--help', function () {
         console.log('');
-        console.log('Example :');
+        console.log('示例 :');
         console.log(chalk.grey('sbr build'));
     });
 
@@ -122,8 +122,8 @@ program.on('--help', function () {
     console.log(chalk.green(`    ${config.version}`));
     console.log('');
     console.log('  Helps:');
-    console.log(chalk.green('    for more details run'), chalk.grey('sbr [command] --help'));
-    console.log(chalk.green('    eg:'), chalk.grey('sbr init --help'));
+    console.log(chalk.green('    想知道命令的具体详情请运行'), chalk.grey('sbr [command] --help'));
+    console.log(chalk.green('    例如:'), chalk.grey('sbr init --help'));
     console.log('')
 });
 

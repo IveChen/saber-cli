@@ -16,15 +16,15 @@
             <a href="/example.html">返回</a>
         </div>
         <div class="jumbotron">
-            <div class="test-css">style from test.css</div>
-            <div class="test-less">style from test.less</div>
-            <div id="testJs">style from test.js</div>
+            <div class="test-css">来自 test.css 的样式</div>
+            <div class="test-less">来自 test.less 的样式</div>
+            <div id="testJs">来自 test.js 的样式</div>
         </div>
         <div class="jumbotron">
 usage:
             <pre>
 &lt;script src='./test.js' >&lt;/script>
-&lt;script src='./test.js?source' >&lt;/script>> //only copy not babel transform.for third-party lib script
+&lt;script src='./test.js?source' >&lt;/script>> //不编译此文件，用于使用第三方库的文件。
 &lt;link href='./test.css' />
 &lt;link href='./test.less' />
 &lt;script src='./test.js?ie=10' >&lt;/script> //ie 10
@@ -32,9 +32,9 @@ usage:
 &lt;script src='./test.js?ie=10+' >&lt;/script> // ie10 ,ie11 ...
 &lt;script src='./test.js?ie=10-11' >&lt;/script> //ie10 ,ie11
             </pre>
-fetures in developing
+features in developing
 <pre>
-&lt;script src='./test.js?inline' >&lt;/script> //mark assets content to html
+&lt;script src='./test.js?inline' >&lt;/script> //将文件资源注入html
 </pre>
         </div>
     </div>

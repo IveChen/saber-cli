@@ -1,26 +1,26 @@
-### about saber-cli
+### 关于 saber-cli
 
-saber is my wife. her name is  [Arturia Pendragon](http://baike.baidu.com/item/%E9%98%BF%E5%B0%94%E6%89%98%E5%88%A9%E4%BA%9A%C2%B7%E6%BD%98%E5%BE%B7%E6%8B%89%E8%B4%A1/10500553?fromtitle=SABER&fromid=19954634)
+saber ! saber ! saber !  [Arturia Pendragon](http://baike.baidu.com/item/%E9%98%BF%E5%B0%94%E6%89%98%E5%88%A9%E4%BA%9A%C2%B7%E6%BD%98%E5%BE%B7%E6%8B%89%E8%B4%A1/10500553?fromtitle=SABER&fromid=19954634)
 
-### note
+### 警告！
 
-cli is unstable before 1.0.0
+在1.0.0之前的版本都不稳定，会进行破坏性变更
 
-### install
+### 安装使用
 ```
 npm install saber-cli -g
 ```
 
-### commands
+### 命令
 #### init
-> create project in current fold
+> 在当前目录初始化工程
 ```
 sbr init
 ```
 
 
 #### create <projectName>
-> create project in current fold
+> 在当前目录创建<projectName>子目录，并初始化工程
 ```
 sbr create <projectName>
 //eg: sbr create hello-world
@@ -28,14 +28,14 @@ sbr create <projectName>
 
 
 #### run [pageName]
-> run project with [pageName] page
+> 打开开发服务器并自动打开 [pageName] 页面
 ```
 sbr run [pageName]
 //eg: sbr run user/list
 ```
 
 #### page <pageName>
-> add <pageName> page
+> 往工程添加 <pageName> 页面
 ```
 sbr page <pageName>
 //eg: sbr page user/list
@@ -55,14 +55,14 @@ sbr -V
 ```
 
 
-### features in developing
-- tag include source rules.
+### 开发中的功能
+- 将资源文件直接注入到html中
 > eg:
 ```html
     <script src='./index.js?inline' />
 ```
 
-- sprite support
+- 支持精灵图
 > eg
 ```css
     .test{
@@ -70,30 +70,32 @@ sbr -V
     }
 ```
 
-- rem support
-> for some ie9+ projects.
+- 支持rem单位
+> 一些 ie9+ 工程无兼容性问题可以需要使用此单位.
 
-- upgrade project when cli is update before it's not stable.
+- 添加假数据命令
 
-- mock command
+- 添加测试命令
 
-- test command
 
 ### History
 
+#### 2017.7.31
+- 支持自定义vendors,可以减少其他相关文件的编译体积，具体配置查看[project]/config/base.js
+
 #### 2017.7.20
 v0.0.11
-- template support,use underscore-template.
-- proxy server support in development mode.
+- 支持使用传统的模板化开发，使用underscore模板
+- 支持代理服务器
 
 #### 2017.7.19
 
 
 v0.0.9
-- update create project flow.
-- react support
-- fix windows system path bug
-- support ie tag rules
+- 更新创建工程的流程
+- 选择主框架为react时会安装一些react的默认依赖
+- 修复在windows系统中的路径文件
+- 当资源使用ie后缀时会自动转换为if-ie语法。
 ```
     // ie10 ie11 not support if condition.
     // you can use <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9"> to make it possible
@@ -106,7 +108,7 @@ v0.0.9
 
 #### 2017.7.18
 v0.0.6
-- support tag import rules.
+- 资源使用source时会只复制文件不进行任何编译，用于引入第三方文件
 ```
     <script src='./index.js' ></script>
     <script src='./index.js?source' ></script>
@@ -114,27 +116,27 @@ v0.0.6
     <link src='./index.less' />
     //more details exec command  'sbr run example/tradition'
 ```
-- update cli example app.
+- 更新examples
 
 
 #### 2017.7.17
 v0.0.4
-> - html-loader support
+> - 添加了html-loader
 
 #### 2017.7.16
 v0.0.3
-> - favorite.ico support
-> - image loader support
-> - fonts loader support
+> - 添加了favorite.ico
+> - 添加了image的loader
+> - 添加了fonts的loader
 
 #### 2017.7.14
 v0.0.2
-> - create command
-> - init command
-> - page command
-> - run command
-> - build command
+> - 完成create命令
+> - 完成init命令
+> - 完成page命令
+> - 完成run命令
+> - 完成build命令
 
 #### 2017.7.13
 v0.0.1
-> init project
+> 测试工程

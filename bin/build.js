@@ -13,10 +13,10 @@ module.exports = function (projectPath, cliPath) {
                 cliPath
             });
         }, function () {
-            console.log(chalk.red(`config file ${projectPath}/config/prod.config.js not found. build stopped.`));
+            console.log(chalk.red(`未能找到配置文件${projectPath}/config/prod.config.js.停止build`));
         })
     }, function () {
-        console.log(chalk.red(`it's not in a saber project,build command stopped`));
+        console.log(chalk.red(`当前目录不是saber工程，停止build`));
 
     });
 };

@@ -1,6 +1,7 @@
 let path = require('path');
 let glob = require('glob');
 let fs = require('fs');
+let webpack = require('webpack');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let slash = require('slash');
@@ -18,13 +19,28 @@ function addEntry(directory, ext, entries, chunks, entryName) {
     }
 }
 
-function buildEntriesAndHtmlWebpackPlugins(projectPath) {
-    let entries = {};
+function buildEntriesAndPlugins(projectPath, userConfig) {
+    let commonChunks = {};
+    let vendors = [];
     let plugins = [];
+    (userConfig.vendors || []).forEach((vendor, key) => {
+        let row = vendor.dependencies;
+        if (row instanceof Array) {
+            row.forEach(function (value, key) {
+                row[key] = value.replace(/\[project\]/gi, projectPath);
+            });
+        } else if (row instanceof String) {
+            row = row.replace(/\[project\]/gi, projectPath);
+        }
+        commonChunks[vendor.name] = row;
+        vendors.push(vendor.name);
+    });
+    let entries = Object.assign({}, commonChunks);
+    //html webpack plugin
     glob.sync(getPath(projectPath, 'src', 'app', '**', '*.html')).forEach(function (file) {
         let fileParser = path.parse(file);
         let entryName = path.relative(getPath(projectPath, 'src', 'app'), fileParser.dir);
-        let chunks = [];
+        let chunks = [...vendors];
         addEntry(fileParser.dir, 'js', entries, chunks, entryName);
         // addEntry(fileParser.dir, 'less', entries, chunks, entryName);
         plugins.push(new HtmlWebpackPlugin({
@@ -35,6 +51,11 @@ function buildEntriesAndHtmlWebpackPlugins(projectPath) {
             favicon: path.join(projectPath, 'src', 'assets', 'images', 'favorite.ico')
         }))
     });
+    //common chunks plugin
+    plugins.push(new webpack.optimize.CommonsChunkPlugin({
+        names: vendors,
+        minChunks: Infinity
+    }));
     return {
         entries,
         plugins
@@ -126,9 +147,25 @@ function getScriptLoaders(options) {
     }];
 }
 
+function getCommonChunksPlugins(userConfig) {
+    let commonChunks = userConfig.commonChunks;
+    let plugins = [];
+    let names = Object.keys(commonChunks);
+    names.forEach(function (name) {
+        plugins.push(new webpack.optimize.CommonsChunkPlugin({
+            name: name,
+            chunks: commonChunks[name],
+            minChunks: 1
+        }));
+    });
+    console.log(plugins)
+    return plugins;
+}
+
 module.exports = {
     getPath,
-    buildEntriesAndHtmlWebpackPlugins,
+    buildEntriesAndPlugins,
     getStyleLoaders,
-    getScriptLoaders
+    getScriptLoaders,
+    getCommonChunksPlugins
 };

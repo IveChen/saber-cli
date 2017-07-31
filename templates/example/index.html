@@ -13,59 +13,62 @@
 <div class="container">
     <div class="jumbotron">
         <h1><img src="./saber.jpeg" class="saber"/>：Hello,World !</h1>
-        <p>welcome to example page</p>
+        <p>这是example页面</p>
         <p>
-            1. example page is default to open,modify 'home' attribute in &lt;project&gt;/config/dev.config.js or run command
+            1. 开发服务器启动时默认打开example页面，您可以通过修改&lt;project&gt;/config/dev.config.js文件中的'home'属性来改变默认打开页面。或者运行命令
         </p>
         <pre>sbr run [pageName] //eg: sbr run example/normal</pre>
         <p>
-            2. more commands run '<strong><i>sbr -h</i></strong>'.
+            2. 更多的命令可以通用运行 '<strong><i>sbr -h</i></strong> 查看'.
         </p>
         <p>
-            3.some example helpful below.
+            3.下面是一些有用的examples.
         </p>
     </div>
     <ul class="list-group">
         <li class="list-group-item">
             <a href="/example/custom.html">
-                <h4>example nommal</h4>
-                <div>index.js auto import by webpack</div>
-                <div>index.less import by index.js default</div>
+                <h4>默认页面</h4>
+                <div>webpack自动引入index.js</div>
+                <div>同时index.js自动引入index.less</div>
             </a>
         </li>
         <li class="list-group-item">
             <a href="/example/tradition.html">
-                <h4>example tradition</h4>
-                <div>traditional way to develop project</div>
+                <h4>传统的开发方式</h4>
+                <div>使用一些传统的开发方式来进行工程开发</div>
             </a>
         </li>
         <li class="list-group-item">
             <a href="/example/proxy.html">
-                <h4>example proxy</h4>
-                <div>develop with proxy server</div>
-                <div>set config in [projectName]/config/dev.config.js</div>
+                <h4>使用代理服务器</h4>
+                <div>使用代理服务器进行开发</div>
+                <div>配置 [projectName]/config/dev.config.js 中的proxyTables来进行代理服务器配置</div>
             </a>
         </li>
         <li class="list-group-item">
             <a href="/example/template.html">
-                <h4>example template</h4>
-                <div>underscore template support</div>
+                <h4>模板化开发</h4>
+                <div>传统的模板化开发方式</div>
+                <div>使用underscore模板</div>
             </a>
         </li>
         <!--vue:{{vue}} react:{{react}}-->
         {% if vue == true %}
         <li class="list-group-item">
             <a href="/example/vue.html">
-                <h4>example vue</h4>
-                <div>saber-cli install some vue relative packages for you</div>
+                <h4>使用vue</h4>
+                <div>saber-cli已经为您默认安装一些常用的vue依赖包</div>
+                <div>配置 [projectName]/config/dev.config.js 中的vendors来减少你项目中的文件大小</div>
             </a>
         </li>
         {% endif %}
         {% if react == true %}
         <li class="list-group-item">
             <a href="/example/react.html">
-                <h4>example react</h4>
-                <div>saber-cli install some react relative packages for you</div>
+                <h4>使用react</h4>
+                <div>saber-cli已经为您默认安装一些常用的react依赖包</div>
+                <div>配置 [projectName]/config/dev.config.js 中的vendors来减少你项目中的文件大小</div>
             </a>
         </li>
         {% endif %}

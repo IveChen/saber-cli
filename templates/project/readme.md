@@ -1,10 +1,10 @@
 ### commands
 
 -------------------
-### history
+### 历史
 {{create_time}}
-> {{author}} create {{appName}}@{{version}}
+> {{author}} 创建了工程 {{appName}}@{{version}}
 
 -------------------
-### about {{appName}} project
+### 关于 {{appName}} 工程
 > {{description}}

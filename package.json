@@ -1,6 +1,6 @@
 {
   "name": "saber-cli",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "an cli for annoying webpack config",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "bin": {
     "sbr": "index.js"
   },
-  "preferGlobal": false,
+  "preferGlobal": true,
   "dependencies": {
     "async": "^2.5.0",
     "babel-core": "^6.25.0",

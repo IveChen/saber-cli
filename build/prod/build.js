@@ -11,22 +11,22 @@ let getBaseConfig = require('../webpack.base');
 let spinner = null;
 module.exports = function (prodConfig, options) {
     process.env.NODE_ENV = 'production';
-    spinner = ora('building');
-    spinner.start('remove old dist files');
+    spinner = ora('编译中...');
+    spinner.start('删除旧的编译目录...');
     rm(path.join(options.projectPath, 'dist'), function (error) {
         if (error) {
-            spinner.fail('remove files error,build stopped');
+            spinner.fail('移除旧的编译目录失败，停止编译');
             throw error;
         } else {
-            spinner.succeed('remove old dist files.');
-            spinner.start('building');
+            spinner.succeed('移除旧的编译目录');
+            spinner.start('编译中...');
 
             webpack(generateProdConfig(prodConfig, options), function (error, stats) {
                 if (error) {
-                    spinner.fail('built');
+                    spinner.fail('编译失败');
                     throw error
                 } else {
-                    spinner.succeed('built')
+                    spinner.succeed('编译成功')
                 }
             })
         }

@@ -13,7 +13,7 @@ let getBaseConfig = require('../webpack.base');
 function start(devConfig, options) {
     let spinner = ora();
     process.env.NODE_ENV = 'development';
-    spinner.start('starting server');
+    spinner.start('准备运行开发服务器');
     let app = express();
     let compiler = webpack(generateDevConfig(devConfig, options));
     let devMiddleware = require('webpack-dev-middleware')(compiler, {
@@ -38,24 +38,24 @@ function start(devConfig, options) {
 
     app.use(require('connect-history-api-fallback')());
 
-    spinner.start('enable webpack dev server');
+    spinner.start('加载webpack开发服务器模块');
 
     app.use(devMiddleware);
-    spinner.succeed('enable webpack dev server');
+    spinner.succeed('加载webpack开发服务器模块');
 
-    spinner.start('enable webpack hot reload module');
+    spinner.start('加载webpack热替换模块');
 
     app.use(hotMiddleware);
-    spinner.succeed('enable webpack hot reload module');
+    spinner.succeed('加载webpack热替换模块');
 
     let proxyMiddleware = require('http-proxy-middleware');
     Object.keys(devConfig.proxyTables).forEach(function (target) {
         app.use(target, proxyMiddleware(target, devConfig.proxyTables[target]))
     });
 
-    spinner.succeed('enable proxy server');
+    spinner.succeed('加载代理服务器模块');
 
-    spinner.start('starting express server');
+    spinner.start('准备启动express服务器');
 
     compiler.plugin('compilation', function (compilation) {
         compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
@@ -65,21 +65,21 @@ function start(devConfig, options) {
     });
 
     devMiddleware.waitUntilValid(() => {
-        spinner.succeed('webpack bundle first time.');
+        spinner.succeed('执行webpack首次编译');
         spinner.start('opening browser');
         let homePage = options.pageName ? options.pageName : devConfig.home;
         if (homePage) {
             let uri = `http://localhost:${devConfig.port}/${homePage}.html`
             require('opn')(uri);
-            spinner.succeed('auto open browser with page ' + chalk.grey(uri));
+            spinner.succeed('已自动在浏览器打开页面 ' + chalk.grey(uri));
         } else {
-            spinner.fail(`attribute "home"  in ${chalk.red(path.join(options.projectPath, 'config', 'dev.config.js'))} is undefined`);
-            console.log(`please manually run `, chalk.grey(`http://localhost:${devConfig.port}`));
+            spinner.fail(` ${chalk.red(path.join(options.projectPath, 'config', 'dev.config.js'))} 文件中的属性'home'没有定义`);
+            console.log(`请手动在浏览器运行页面 `, chalk.grey(`http://localhost:${devConfig.port}`));
         }
     });
     app.listen(devConfig.port, function () {
-        spinner.succeed('start express server at port ' + chalk.grey(devConfig.port) + '');
-        spinner.start('webpack bundle first time');
+        spinner.succeed('在 ' + chalk.grey(devConfig.port) + ' 端口启动express服务器');
+        spinner.start('正在执行webpack首次编译');
     });
 }
 

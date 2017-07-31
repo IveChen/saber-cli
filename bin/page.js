@@ -23,7 +23,7 @@ module.exports = function (projectPath, cliPath, pageName) {
             inquirer.prompt([{
                 type: 'confirm',
                 name: 'ok',
-                message: `page <${pageName}> is already exist,continue will remove it. continue?`,
+                message: `目录 <${pageName}> 已经存在，确认后将清空目录，是否继续?`,
                 default: true
             }]).then(function (answers) {
                 if (answers.ok) {
@@ -34,7 +34,7 @@ module.exports = function (projectPath, cliPath, pageName) {
             })
         })
     }, function () {
-        console.log(chalk.red(`it's not in a saber project,create page <${pageName}> stopped`));
+        console.log(chalk.red(`当前目录不是saber工程，停止创建页面 <${pageName}>`));
     })
 };
 
@@ -82,7 +82,7 @@ function createPage(pagePath, cliPath, projectName, pageName) {
                 throw error;
             }
             spinner.succeed(`create page <${pageName}>`);
-            console.log(chalk.red(`please run 'sbr run' again.`))
+            console.log(chalk.red(`请停止已经运行的服务器(如果有运行的话),在终端执行'sbr run ${pageName}'`))
             spinner.stop()
         });
 }

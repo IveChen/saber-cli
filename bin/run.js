@@ -18,10 +18,10 @@ module.exports = function (projectPath, cliPath, pageName) {
                 pageName
             });
         }, function () {
-            console.log(chalk.red(`config file ${projectPath}/config/dev.config.js not found. run stopped.`))
+            console.log(chalk.red(`未能找到配置文件 ${projectPath}/config/dev.config.js.停止运行开发服务器`))
         })
     }, function () {
-        console.log(chalk.red(`it's not in a saber project,run command stopped`));
+        console.log(chalk.red(`当前目录不是saber工程，停止运行开发服务器`));
     })
 };
 
