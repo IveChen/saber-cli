@@ -6,10 +6,10 @@ let webpack = require('webpack');
 let util = require('./util');
 
 module.exports = function (userConfig, options) {
-    let {entries, plugins} = util.buildEntriesAndPlugins(options.projectPath,userConfig);
+    let {entries, plugins} = util.buildEntriesAndPlugins(options.projectPath, userConfig);
     return {
         output: {
-            path: util.getPath(options.projectPath, 'dist'),
+            path: util.getPath(options.projectPath, 'dist', userConfig.assetPath || ''),
             filename: 'scripts/[name].[hash:8].js',
         },
         resolve: {
@@ -52,8 +52,8 @@ module.exports = function (userConfig, options) {
                     }]
                 },
                 ...util.getScriptLoaders(options),
-                ...util.getStyleLoaders('css', options),
-                ...util.getStyleLoaders('less', options),
+                ...util.getStyleLoaders('css', options, userConfig),
+                ...util.getStyleLoaders('less', options, userConfig),
                 {
                     test: /\.vue/,
                     use: [{
@@ -67,7 +67,7 @@ module.exports = function (userConfig, options) {
                         loader: 'url-loader',
                         options: {
                             limit: 1024 * 8,
-                            name: 'images/[name].[hash:8].[ext]'
+                            name: util.fixFileLoaderPath('images/[name].[hash:8].[ext]')
                         }
                     }]
                 },
@@ -76,7 +76,7 @@ module.exports = function (userConfig, options) {
                     loader: [{
                         loader: 'file-loader',
                         options: {
-                            name: 'fonts/[name].[hash:8].[ext]'
+                            name: util.fixFileLoaderPath('fonts/[name].[hash:8].[ext]')
                         }
                     }]
                 },

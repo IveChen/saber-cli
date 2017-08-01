@@ -5,9 +5,14 @@ let webpack = require('webpack');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let slash = require('slash');
+let autoprefixer = require("autoprefixer")
 
 function getPath(projectPath, ...otherPath) {
     return path.join(projectPath, ...otherPath);
+}
+
+function fixFileLoaderPath(path) {
+    return process.env.NODE_ENV === 'development' ? path : '/' + path;
 }
 
 function addEntry(directory, ext, entries, chunks, entryName) {
@@ -47,7 +52,7 @@ function buildEntriesAndPlugins(projectPath, userConfig) {
             template: file,
             inject: true,
             chunks: chunks,
-            filename: `${entryName}.html`,
+            filename: getPath(projectPath, 'dist', userConfig.pagePath || '', `${entryName}.html`),
             favicon: path.join(projectPath, 'src', 'assets', 'images', 'favorite.ico')
         }))
     });
@@ -62,13 +67,25 @@ function buildEntriesAndPlugins(projectPath, userConfig) {
     }
 }
 
-function getStyleLoaders(ext, options) {
-    let issuerJSLoader = ext === 'css' ? {
-        issuer: /\.js$/,
-        loader: ExtractTextPlugin.extract('css-loader')
-    } : {
-        issuer: /\.js$/,
-        loaders: ExtractTextPlugin.extract(['css-loader', `${ext}-loader`])
+function getStyleLoaders(ext, options, userConfig) {
+    const cssLoaders = {
+        loader: 'css-loader',
+        options: {
+            importLoaders: 1
+        }
+    };
+    console.log(userConfig.postCss.browsers)
+    const postCssLoader = {
+        loader: 'postcss-loader',
+        options: {
+            plugins: [
+                autoprefixer({
+                    browsers: userConfig.postCss.browsers,
+                    add: true,
+                    remove: true
+                })
+            ]
+        }
     };
     return [{
         test: new RegExp(`\.${ext}$`),
@@ -79,18 +96,24 @@ function getStyleLoaders(ext, options) {
             path.join(options.projectPath, 'node_modules'),
             path.join(options.cliPath, 'node_modules')
         ],
-        oneOf: [issuerJSLoader, {
+        oneOf: [{
+            issuer: /\.js$/,
+            use: ExtractTextPlugin.extract({
+                fallback: 'style-loader',
+                use: [cssLoaders, postCssLoader].concat(ext === 'css' ? [] : [{
+                    loader: `${ext}-loader`
+                }])
+            })
+        }, {
             issuer: /\.(html|tpl)$/,
             use: [{
                 loader: 'file-loader',
                 options: {
-                    name: `styles/[name]_${ext}.[hash:8].css`
+                    name: fixFileLoaderPath(`styles/[name]_${ext}.[hash:8].css`)
                 }
             }, {
                 loader: 'extract-loader'
-            }, {
-                loader: 'css-loader'
-            }].concat(ext === 'css' ? [] : [{
+            }, cssLoaders, postCssLoader].concat(ext === 'css' ? [] : [{
                 loader: `${ext}-loader`
             }])
         }]
@@ -125,14 +148,14 @@ function getScriptLoaders(options) {
                 use: [{
                     loader: 'file-loader',
                     options: {
-                        name: 'scripts/[name].[hash:8].js'
+                        name: fixFileLoaderPath('scripts/[name].[hash:8].js')
                     }
                 }]
             }, {
                 use: [{
                     loader: 'entry-loader',
                     options: {
-                        name: 'scripts/[name].[hash:8].js',
+                        name: fixFileLoaderPath('scripts/[name].[hash:8].js'),
                         projectPath: options.projectPath
                     }
                 }, babelLoaderConfig]
@@ -167,5 +190,6 @@ module.exports = {
     buildEntriesAndPlugins,
     getStyleLoaders,
     getScriptLoaders,
-    getCommonChunksPlugins
+    getCommonChunksPlugins,
+    fixFileLoaderPath
 };

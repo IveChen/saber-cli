@@ -9,7 +9,7 @@ module.exports = {
          * autoprefixer 浏览器配置
          * 配置细节参考 https://github.com/postcss/autoprefixer#browsers 和 https://github.com/ai/browserslist#queries
          */
-        browsers: ["ie >= 9", "last 2 versions"],
+        browsers: ["last 4 version","ie > 8"],
         //是否将px转换成rem.适用于ie9+的项目
         rem: true,
     },
