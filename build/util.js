@@ -74,7 +74,6 @@ function getStyleLoaders(ext, options, userConfig) {
             importLoaders: 1
         }
     };
-    console.log(userConfig.postCss.browsers)
     const postCssLoader = {
         loader: 'postcss-loader',
         options: {

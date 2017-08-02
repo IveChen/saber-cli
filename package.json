@@ -1,6 +1,6 @@
 {
   "name": "saber-cli",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "an cli for annoying webpack config",
   "main": "index.js",
   "scripts": {
@@ -46,7 +46,7 @@
     "eslint-loader": "^1.9.0",
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.15.3",
-    "extract-loader": "^1.0.0",
+    "extract-loader": "^0.1.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "fastparse": "^1.1.1",
     "file-loader": "^0.11.2",

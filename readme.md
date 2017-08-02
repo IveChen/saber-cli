@@ -1,12 +1,13 @@
 ### 关于 saber-cli
 
 saber ! saber ! saber !  [Arturia Pendragon](http://baike.baidu.com/item/%E9%98%BF%E5%B0%94%E6%89%98%E5%88%A9%E4%BA%9A%C2%B7%E6%BD%98%E5%BE%B7%E6%8B%89%E8%B4%A1/10500553?fromtitle=SABER&fromid=19954634)
+每次开新项目都要创建工程烦的要死，因此有了这个玩意。
 
 
 ### 要求
 
-node: 6+
-platform: osx , windows
+> node: 6+
+> platform: osx , windows
 
 ### 警告！
 
@@ -79,7 +80,7 @@ sbr -V
 - 支持rem单位 (正在犹豫实现方案...因为使用rem会导致一些问题..所以应该默认会关闭此功能..)
 > 一些 ie9+ 工程可以无兼容性问题使用此单位.
 > 一些 mobile page 工程需要使用此单位.
-> 将基于此方案实现 http://www.jianshu.com/p/985d26b40199,同时将解决1px问题。
+> 将基于此方案实现,同时将解决1px问题 http://www.jianshu.com/p/985d26b40199 。
 
 - 添加假数据命令
 
@@ -90,9 +91,8 @@ sbr -V
 
 ### History
 #### 2017.8.1
-- 支持配置编译后的文件存放路径
+- 支持配置编译后的文件存放路径，相关配置在[project]/config/prod.config.js
 - 使用postcss的autoprefixer自动添加css前缀，相关配置在[project]/config/base.js
-- 因为英文实在写得难受，所以换回了中文。
 
 #### 2017.7.31
 - 支持自定义vendors,可以减少其他相关文件的编译体积，具体配置查看[project]/config/base.js
