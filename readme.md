@@ -69,13 +69,6 @@ sbr -V
     <script src='./index.js?inline' />
 ```
 
-- 支持精灵图
-> eg
-```css
-    .test{
-        background:url('./saber.png?sprite')
-    }
-```
 
 - 支持rem单位 (正在犹豫实现方案...因为使用rem会导致一些问题..所以应该默认会关闭此功能..)
 > 一些 ie9+ 工程可以无兼容性问题使用此单位.
@@ -90,11 +83,24 @@ sbr -V
 
 
 ### History
+#### 2017.8.2
+v0.0.17
+- 支持精灵图，要求必须为png图片，且需要加上?sprite
+目前使用https://github.com/2createStudio/postcss-sprites 进行精灵图的自动生成。
+> eg
+```css
+    .test{
+        background:url('./saber.png?sprite')
+    }
+```
+
 #### 2017.8.1
+v0.0.15
 - 支持配置编译后的文件存放路径，相关配置在[project]/config/prod.config.js
 - 使用postcss的autoprefixer自动添加css前缀，相关配置在[project]/config/base.js
 
 #### 2017.7.31
+v0.0.13
 - 支持自定义vendors,可以减少其他相关文件的编译体积，具体配置查看[project]/config/base.js
 
 #### 2017.7.20

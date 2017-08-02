@@ -66,7 +66,7 @@ module.exports = function (userConfig, options) {
                     loader: [{
                         loader: 'url-loader',
                         options: {
-                            limit: 1024 * 8,
+                            limit: 8 * 1024,
                             name: util.fixFileLoaderPath('images/[name].[hash:8].[ext]')
                         }
                     }]

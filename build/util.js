@@ -1,11 +1,13 @@
 let path = require('path');
 let glob = require('glob');
 let fs = require('fs');
+let net = require('net');
 let webpack = require('webpack');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let slash = require('slash');
-let autoprefixer = require("autoprefixer")
+let autoprefixer = require("autoprefixer");
+let postcssSprites = require('postcss-sprites');
 
 function getPath(projectPath, ...otherPath) {
     return path.join(projectPath, ...otherPath);
@@ -82,6 +84,21 @@ function getStyleLoaders(ext, options, userConfig) {
                     browsers: userConfig.postCss.browsers,
                     add: true,
                     remove: true
+                }),
+                postcssSprites({
+                    spritePath: path.join(options.projectPath, 'dist', userConfig.assetPath || '', 'images', 'sprites_tmp'),
+                    retina: true,
+                    spritesmith: {
+                        padding: 20,
+                    },
+                    filterBy: function (image) {
+                        if (/\.png\?sprite$/.test(image.originalUrl)) {
+                            return Promise.resolve();
+                        } else {
+                            return Promise.reject();
+                        }
+
+                    }
                 })
             ]
         }
@@ -180,7 +197,6 @@ function getCommonChunksPlugins(userConfig) {
             minChunks: 1
         }));
     });
-    console.log(plugins)
     return plugins;
 }
 

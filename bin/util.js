@@ -2,20 +2,21 @@ let fs = require('fs');
 let path = require('path');
 let consolidate = require('consolidate');
 let async = require('async');
+let net = require("net");
 
 //check process folder is saber project
 function checkIsSbrProject(projectPath) {
     return new Promise((resolve, reject) => {
         fs.readFile(path.join(projectPath, 'package.json'), function (error, data) {
-            if(!error){
+            if (!error) {
                 data = data.toString();
-                try{
+                try {
                     data = JSON.parse(data);
-                    if(data.saber){
+                    if (data.saber) {
                         resolve();
                         return;
                     }
-                }catch(error){
+                } catch (error) {
 
                 }
             }
@@ -44,7 +45,26 @@ function renderTemplateFile(getConfig) {
     }
 }
 
+
+function checkPortValid(port) {
+    return new Promise((resolve, reject) => {
+        let server = net.createServer().listen(port)
+
+        server.on('listening', function () {
+            server.close();
+            resolve();
+        });
+
+        server.on('error', function (err) {
+            if (err.code === 'EADDRINUSE') {
+                reject();
+            }
+        });
+    });
+}
+
 module.exports = {
     checkIsSbrProject,
-    renderTemplateFile
+    renderTemplateFile,
+    checkPortValid
 };

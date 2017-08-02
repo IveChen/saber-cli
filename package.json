@@ -1,6 +1,6 @@
 {
   "name": "saber-cli",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "an cli for annoying webpack config",
   "main": "index.js",
   "scripts": {
@@ -60,10 +60,12 @@
     "loader-utils": "^1.1.0",
     "metalsmith": "^2.3.0",
     "moment": "^2.18.1",
+    "net": "^1.0.2",
     "opn": "^5.1.0",
     "optimize-css-assets-webpack-plugin": "^3.0.0",
     "ora": "^1.3.0",
     "postcss-loader": "^2.0.6",
+    "postcss-sprites": "^4.2.1",
     "rimraf": "^2.6.1",
     "shelljs": "^0.7.8",
     "slash": "^1.0.0",
