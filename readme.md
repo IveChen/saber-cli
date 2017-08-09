@@ -1,13 +1,19 @@
 ### 关于 saber-cli
-
-saber ! saber ! saber !  [Arturia Pendragon](http://baike.baidu.com/item/%E9%98%BF%E5%B0%94%E6%89%98%E5%88%A9%E4%BA%9A%C2%B7%E6%BD%98%E5%BE%B7%E6%8B%89%E8%B4%A1/10500553?fromtitle=SABER&fromid=19954634)
-每次开新项目都要创建工程烦的要死，因此有了这个玩意。
+> - 为什么叫saber?
+> - 嘿嘿嘿... [Arturia Pendragon](http://baike.baidu.com/item/%E9%98%BF%E5%B0%94%E6%89%98%E5%88%A9%E4%BA%9A%C2%B7%E6%BD%98%E5%BE%B7%E6%8B%89%E8%B4%A1/10500553?fromtitle=SABER&fromid=19954634)
+> - 为什么有saber?
+> - 每次搞新项目就各种重新搭框架各种改这里改那里，超级烦 ...
 
 
 ### 要求
 
-> node: 6+
-> platform: osx , windows
+> - node: 6+
+> - platform: osx , windows
+> - 因为使用了一些奇奇怪怪的包，建议翻墙。
+> - 精灵图需要使用到phantomjs，建议提前安装以免安装失败。
+```
+    http://phantomjs.org/download.html
+```
 
 ### 警告！
 
@@ -70,23 +76,41 @@ sbr -V
 ```
 
 
-- 支持rem单位 (正在犹豫实现方案...因为使用rem会导致一些问题..所以应该默认会关闭此功能..)
-> 一些 ie9+ 工程可以无兼容性问题使用此单位.
-> 一些 mobile page 工程需要使用此单位.
-> 将基于此方案实现,同时将解决1px问题 http://www.jianshu.com/p/985d26b40199 。
+- 自动将px转换成rem (...因为烂用rem会导致一些问题..所以有点犹豫是不是要提供)
+> - 一些 ie9+ 工程可以无兼容性问题使用此单位.
+> - 一些 mobile page 工程需要使用此单位.
+> - 将基于此方案实现,同时将解决1px问题 http://www.jianshu.com/p/985d26b40199 。
 
 - 添加假数据命令
+```
+    sbr mock <apiName>
+    //eg: sbr mock user/list/:id
+```
 
 - 添加测试命令
+```
+    sbr test
+```
 
 - 允许由使用者自定义生成的页面模板
+```
+    其实并不想提供，因为正常人都会ctrl+c ctrl+v = = 比调用命令还方便。
+```
 
 
 ### History
+#### 2017.8.9
+- 参考https://github.com/youzan/sprite-loader后修改了相关的规则代码进行精灵图的生成
+- 修复了使用了babel-preset导致vue无法使用的问题。
+
+#### 2017.8.3
+v0.0.18
+- ~~鉴于使用精灵图会在初始化的时候编译多次从而导致一直刷新页面，因此使用了节流函数确保页面在3秒内最多刷新一次页面.更多查看 http://justclear.gitlab.io/throttle-and-debounce/~~
+
 #### 2017.8.2
 v0.0.17
 - 支持精灵图，要求必须为png图片，且需要加上?sprite
-目前使用https://github.com/2createStudio/postcss-sprites 进行精灵图的自动生成。
+~~目前使用https://github.com/youzan/sprite-loader进行精灵图的自动生成。~~
 > eg
 ```css
     .test{

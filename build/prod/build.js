@@ -38,11 +38,6 @@ function generateProdConfig(prodConfig, options) {
         output: {
             publicPath: prodConfig.publicPath
         },
-        resolve: {
-            alias: {
-                vue: 'vue/dist/vue.min.js'
-            }
-        },
         plugins: [
             new webpack.DefinePlugin({
                 'process.env': 'production'

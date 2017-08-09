@@ -13,9 +13,6 @@ module.exports = function (userConfig, options) {
             filename: 'scripts/[name].[hash:8].js',
         },
         resolve: {
-            alias: {
-                'vue': 'vue/dist/vue.js'
-            },
             modules: [
                 path.join(options.projectPath, 'node_modules'),
                 path.join(options.cliPath, 'node_modules'),
@@ -29,7 +26,10 @@ module.exports = function (userConfig, options) {
             ],
             alias: {
                 'entry-loader': path.join(options.cliPath, 'loaders', 'entry-loader', 'index.js'),
-                'ie-loader': path.join(options.cliPath, 'loaders', 'ie-loader', 'index.js')
+                'ie-loader': path.join(options.cliPath, 'loaders', 'ie-loader', 'index.js'),
+                'inline-loader': path.join(options.cliPath, 'loaders', 'inline-loader', 'index.js'),
+                'sprite-loader': path.join(options.cliPath, 'loaders', 'sprite-loader', 'index.js'),
+                'test-loader': path.join(options.cliPath, 'loaders', 'test-loader', 'index.js')
             }
         },
         entry: Object.assign({
@@ -57,13 +57,12 @@ module.exports = function (userConfig, options) {
                 {
                     test: /\.vue/,
                     use: [{
-                        loader: 'vue-loader',
-                        options: {}
+                        loader: 'vue-loader'
                     }]
                 },
                 {
                     test: /(png|jpe?g|gif)$/,
-                    loader: [{
+                    use: [{
                         loader: 'url-loader',
                         options: {
                             limit: 8 * 1024,
@@ -73,7 +72,7 @@ module.exports = function (userConfig, options) {
                 },
                 {
                     test: /\.(woff2?|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                    loader: [{
+                    use: [{
                         loader: 'file-loader',
                         options: {
                             name: util.fixFileLoaderPath('fonts/[name].[hash:8].[ext]')
@@ -85,6 +84,11 @@ module.exports = function (userConfig, options) {
                     use: [
                         {
                             loader: 'underscore-template-loader',
+                            query: {
+                                attributes: userConfig.htmlAssets || ['script:src', 'img:src', 'link:href']
+                            }
+                        }, {
+                            loader: "inline-loader",
                             query: {
                                 attributes: userConfig.htmlAssets || ['script:src', 'img:src', 'link:href']
                             }
@@ -103,7 +107,10 @@ module.exports = function (userConfig, options) {
                             attributes: userConfig.htmlAssets || ['script:src', 'img:src', 'link:href']
                         }
                     }, {
-                        loader: 'ie-loader'
+                        loader: 'ie-loader',
+                        query: {
+                            attributes: userConfig.htmlAssets || ['script:src', 'img:src', 'link:href']
+                        }
                     }]
                 }
             ]

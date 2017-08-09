@@ -4,7 +4,7 @@ module.exports = Object.assign(baseConfig, {
     //代理服务器配置
     //更多配置细节参考 https://github.com/chimurai/http-proxy-middleware#http-proxy-options
     proxyTables: {
-        // '/api.php': {
+        // '/login': {
         //     target: 'http://www.example.com',
         //     changeOrigin: true
         // }

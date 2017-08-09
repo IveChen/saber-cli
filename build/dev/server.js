@@ -21,12 +21,15 @@ function start(devConfig, options) {
         noInfo: true
     });
 
+    let throttleReloadEvent = util.throttle(function () {
+        hotMiddleware.publish({action: 'reload'});
+    }, 3000);
+
     let hotMiddleware = require('webpack-hot-middleware')(compiler, {
-        log (message){
+        log(message) {
             if (message.indexOf('built') > -1) {
-                //build success
                 spinner.succeed(`${chalk.red(moment().format('hh:mm:ss:SSS'))}: ${message}`);
-                hotMiddleware.publish({action: 'reload'});
+                throttleReloadEvent();
             } else {
                 spinner.start(message);
             }
@@ -59,7 +62,6 @@ function start(devConfig, options) {
 
     compiler.plugin('compilation', function (compilation) {
         compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
-            // hotMiddleware.publish({action: 'reload'});
             cb();
         });
     });

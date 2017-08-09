@@ -7,7 +7,6 @@ let HtmlWebpackPlugin = require('html-webpack-plugin');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let slash = require('slash');
 let autoprefixer = require("autoprefixer");
-let postcssSprites = require('postcss-sprites');
 
 function getPath(projectPath, ...otherPath) {
     return path.join(projectPath, ...otherPath);
@@ -60,8 +59,7 @@ function buildEntriesAndPlugins(projectPath, userConfig) {
     });
     //common chunks plugin
     plugins.push(new webpack.optimize.CommonsChunkPlugin({
-        names: vendors,
-        minChunks: Infinity
+        names: vendors
     }));
     return {
         entries,
@@ -84,25 +82,11 @@ function getStyleLoaders(ext, options, userConfig) {
                     browsers: userConfig.postCss.browsers,
                     add: true,
                     remove: true
-                }),
-                postcssSprites({
-                    spritePath: path.join(options.projectPath, 'dist', userConfig.assetPath || '', 'images', 'sprites_tmp'),
-                    retina: true,
-                    spritesmith: {
-                        padding: 20,
-                    },
-                    filterBy: function (image) {
-                        if (/\.png\?sprite$/.test(image.originalUrl)) {
-                            return Promise.resolve();
-                        } else {
-                            return Promise.reject();
-                        }
-
-                    }
                 })
             ]
         }
     };
+
     return [{
         test: new RegExp(`\.${ext}$`),
         include: [
@@ -116,22 +100,40 @@ function getStyleLoaders(ext, options, userConfig) {
             issuer: /\.js$/,
             use: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
-                use: [cssLoaders, postCssLoader].concat(ext === 'css' ? [] : [{
+                use: [cssLoaders, {
+                    loader: 'sprite-loader'
+                }, postCssLoader].concat(ext === 'css' ? [] : [{
                     loader: `${ext}-loader`
                 }])
             })
         }, {
             issuer: /\.(html|tpl)$/,
-            use: [{
-                loader: 'file-loader',
-                options: {
-                    name: fixFileLoaderPath(`styles/[name]_${ext}.[hash:8].css`)
+            oneOf: [
+                {
+                    resourceQuery: /inline/,
+                    use: [{
+                        loader: 'style-loader'
+                    }, cssLoaders, {
+                        loader: 'sprite-loader'
+                    }, postCssLoader].concat(ext === 'css' ? [] : [{
+                        loader: `${ext}-loader`
+                    }])
+                },
+                {
+                    use: [{
+                        loader: 'file-loader',
+                        options: {
+                            name: fixFileLoaderPath(`styles/[name]_${ext}.[hash:8].css`)
+                        }
+                    }, {
+                        loader: 'extract-loader'
+                    }, cssLoaders, {
+                        loader: 'sprite-loader'
+                    }, postCssLoader].concat(ext === 'css' ? [] : [{
+                        loader: `${ext}-loader`
+                    }])
                 }
-            }, {
-                loader: 'extract-loader'
-            }, cssLoaders, postCssLoader].concat(ext === 'css' ? [] : [{
-                loader: `${ext}-loader`
-            }])
+            ]
         }]
     }];
 }
@@ -141,12 +143,9 @@ function getScriptLoaders(options) {
     let babelLoaderConfig = {
         loader: 'babel-loader',
         options: {
-            presets: [require('babel-preset-env'), require('babel-preset-stage-2'), require('babel-preset-react')],
-            plugins: [
-                require('babel-plugin-transform-runtime'),
-                require('babel-plugin-add-module-exports')
-            ],
-            comments: false,
+            presets: [
+                require('babel-preset-react')
+            ]
         }
     };
 
@@ -155,9 +154,6 @@ function getScriptLoaders(options) {
         include: [path.join(options.projectPath, 'src')],
         exclude: [path.join(options.projectPath, 'node_modules'), path.join(options.cliPath, 'node_modules')],
         oneOf: [{
-            resourceQuery: /__webpack__/,
-            use: [babelLoaderConfig]
-        }, {
             issuer: /\.(html|tpl)$/,
             oneOf: [{
                 resourceQuery: /source/,
@@ -177,7 +173,6 @@ function getScriptLoaders(options) {
                 }, babelLoaderConfig]
             }]
         }, {
-            issuer: /js$/,
             use: [babelLoaderConfig]
         }]
     }, {
@@ -200,11 +195,25 @@ function getCommonChunksPlugins(userConfig) {
     return plugins;
 }
 
+function throttle(fn, interval = 300) {
+    let canRun = true;
+    return function () {
+        if (!canRun) return;
+        canRun = false;
+        setTimeout(() => {
+            fn.apply(this, arguments);
+            canRun = true;
+        }, interval);
+    };
+}
+
+
 module.exports = {
     getPath,
     buildEntriesAndPlugins,
     getStyleLoaders,
     getScriptLoaders,
     getCommonChunksPlugins,
-    fixFileLoaderPath
+    fixFileLoaderPath,
+    throttle
 };
