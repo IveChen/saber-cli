@@ -10,10 +10,6 @@
 > - node: 6+
 > - platform: osx , windows
 > - 因为使用了一些奇奇怪怪的包，建议翻墙。
-> - 精灵图需要使用到phantomjs，建议提前安装以免安装失败。
-```
-    http://phantomjs.org/download.html
-```
 
 ### 警告！
 
@@ -100,8 +96,10 @@ sbr -V
 
 ### History
 #### 2017.8.9
+v0.0.19
 - 参考https://github.com/youzan/sprite-loader后修改了相关的规则代码进行精灵图的生成
 - 修复了使用了babel-preset导致vue无法使用的问题。
+- 修复example/vue的样式示例问题。
 
 #### 2017.8.3
 v0.0.18

@@ -1,6 +1,6 @@
 {
   "name": "saber-cli",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "an cli for annoying webpack config",
   "main": "index.js",
   "scripts": {

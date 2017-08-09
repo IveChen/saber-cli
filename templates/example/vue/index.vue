@@ -10,7 +10,7 @@ export default {
   
 }
 </script>
-<style language='less' scoped>
+<style lang='less' scoped>
     $top: 10px;
     .wrapper{
         margin-top: $top + 20px;

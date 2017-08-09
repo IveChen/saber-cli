@@ -181,20 +181,6 @@ function getScriptLoaders(options) {
     }];
 }
 
-function getCommonChunksPlugins(userConfig) {
-    let commonChunks = userConfig.commonChunks;
-    let plugins = [];
-    let names = Object.keys(commonChunks);
-    names.forEach(function (name) {
-        plugins.push(new webpack.optimize.CommonsChunkPlugin({
-            name: name,
-            chunks: commonChunks[name],
-            minChunks: 1
-        }));
-    });
-    return plugins;
-}
-
 function throttle(fn, interval = 300) {
     let canRun = true;
     return function () {
@@ -213,7 +199,6 @@ module.exports = {
     buildEntriesAndPlugins,
     getStyleLoaders,
     getScriptLoaders,
-    getCommonChunksPlugins,
     fixFileLoaderPath,
     throttle
 };
